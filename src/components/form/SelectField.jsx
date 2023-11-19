@@ -1,9 +1,9 @@
-import Asterisk from 'assets/images/Asterisk'
 import React from 'react'
 import { Form } from 'react-bootstrap'
 import { useController } from 'react-hook-form'
 import Select from 'react-select'
 import styled from 'styled-components'
+import Asterisk from '../Asterisk'
 
 function SelectField({ name, control, rules, defaultValue, subLabel, label, children, hasAsterisk, ...props }) {
   const {

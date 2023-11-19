@@ -1,21 +1,31 @@
-import React from 'react'
-import { Form } from 'react-bootstrap'
-import { useController } from 'react-hook-form'
-import styled from 'styled-components'
+import React from 'react';
+import { Form } from 'react-bootstrap';
+import { useController } from 'react-hook-form';
+import styled from 'styled-components';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import Asterisk from 'assets/images/Asterisk';
+import Asterisk from '../Asterisk';
 
-function InputField({ noLabel, label, children, control, name, rules, defaultValue, noClear, hasAsterisk, ...props }) {
+function InputField({
+  noLabel,
+  label,
+  children,
+  control,
+  name,
+  rules,
+  defaultValue,
+  noClear,
+  hasAsterisk,
+  ...props
+}) {
   const {
     field: { ref, ...controlProps },
     fieldState: { invalid, isTouched, isDirty, error },
-    
   } = useController({
     name,
     control,
     rules: rules || { required: 'Vui lòng nhập trường này' },
     defaultValue,
-  })
+  });
 
   return (
     <Styles>
@@ -55,7 +65,7 @@ function InputField({ noLabel, label, children, control, name, rules, defaultVal
   );
 }
 
-export default InputField
+export default InputField;
 
 const Styles = styled.div`
   width: 100%;
@@ -68,4 +78,4 @@ const Styles = styled.div`
   .input-wrapper {
     position: relative;
   }
-`
+`;

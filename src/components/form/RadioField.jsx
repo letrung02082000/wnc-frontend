@@ -2,7 +2,6 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import styled from 'styled-components'
 import classNames from 'classnames'
-import Asterisk from 'assets/images/Asterisk'
 
 function RadioField(props) {
   const generateCheck = props?.options?.map((option, index) => {
