@@ -10,6 +10,10 @@ export const PATH = {
         ROOT: '/auth',
         SIGNIN: '/auth/login',
         SIGNUP: '/auth/register',
-        FORGOT_PASSWORD: '/auth/forgot-password',
-    }
+    },
+    USER: {
+        ROOT: '/user',
+        PROFILE: '/user/profile',
+        CHANGE_PASSWORD: '/user/change-password',
+    },
 };

@@ -1,9 +1,9 @@
 import axios from 'axios';
+import { API_URL } from '../constants/endpoints';
 
-const token = localStorage.getItem('phototd-token');
-let baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const token = localStorage.getItem('token');
 const axiosClient = axios.create({
-  baseURL,
+  baseURL: API_URL,
   headers: token && {
     Authorization: `Bearer ${token}`,
   },

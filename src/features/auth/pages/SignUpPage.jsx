@@ -4,6 +4,7 @@ import InputField from '../../../components/form/InputField';
 import ReactIcon from '../../../assets/react.svg';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../constants/path';
+import { userApi } from '../../../api/userApi';
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -33,6 +34,21 @@ function SignInPage() {
     setFocus(name);
   };
 
+  const handleSignUpButton = async () => {
+    await handleSubmit((data) => {
+      userApi
+        .register(data)
+        .then((res) => {
+          if (res.status === 201) {
+            navigate(PATH.AUTH.SIGNIN);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })();
+  };
+
   return (
     <Container>
       <Row className='justify-content-center'>
@@ -44,16 +60,23 @@ function SignInPage() {
             <Col>
               <InputField
                 className='mb-3'
-                label='Địa chỉ email'
-                placeholder='Nhập địa chỉ email của bạn'
-                name='email'
-                type='email'
+                label='Tên của bạn'
+                placeholder='Nhập họ tên của bạn'
+                name='fullname'
                 control={control}
                 onClear={handleClearButton}
               />
               <InputField
-                className='mb-5'
+                className='mb-3'
+                label='Tên đăng nhập'
+                placeholder='Nhập tên đăng nhập của bạn'
+                name='username'
+                control={control}
+                onClear={handleClearButton}
+              />
+              <InputField
                 label='Mật khẩu'
+                className='mb-3'
                 placeholder='Nhập mật khẩu của bạn'
                 name='password'
                 type='password'
@@ -64,12 +87,20 @@ function SignInPage() {
           </Row>
           <Row>
             <Col>
-              <Button className='mb-3 w-100'>Đăng ký</Button>
+              <Button className='my-3 w-100' onClick={handleSignUpButton}>
+                Đăng ký
+              </Button>
             </Col>
           </Row>
           <Row>
             <Col>
-              <Button className='w-100' variant='outline-primary' onClick={() => navigate(PATH.AUTH.SIGNIN)}>Đến trang đăng nhập</Button>
+              <Button
+                className='w-100'
+                variant='outline-primary'
+                onClick={() => navigate(PATH.AUTH.SIGNIN)}
+              >
+                Đến trang đăng nhập
+              </Button>
             </Col>
           </Row>
         </Col>

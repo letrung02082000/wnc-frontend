@@ -15,6 +15,7 @@ function InputField({
   defaultValue,
   noClear,
   hasAsterisk,
+  className,
   ...props
 }) {
   const {
@@ -29,7 +30,7 @@ function InputField({
 
   return (
     <Styles>
-      <Form.Group>
+      <Form.Group className={className}>
         {!noLabel && (
           <>
             <Form.Label className='mb-1'>{label || children || ''}</Form.Label>

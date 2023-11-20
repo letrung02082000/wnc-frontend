@@ -8,6 +8,7 @@ import AdminGuard from '../components/guard/AdminGuard';
 import MainGuard from '../components/guard/MainGuard';
 import AdminPage from '../features/admin';
 import { SignInPage, SignUpPage } from '../features/auth';
+import { ProfilePage } from '../features/user';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             path: PATH.AUTH.SIGNUP,
             element: <SignUpPage />,
           },
+          {
+            path: PATH.USER.PROFILE,
+            element: <ProfilePage />,
+          }
         ],
       },
     ],

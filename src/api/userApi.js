@@ -1,6 +1,6 @@
 import axiosClient from './axiosClient';
 
-const userApi = {
+export const userApi = {
     login: (body) => {
         const url = '/auth/login';
         return axiosClient.post(url, body);
