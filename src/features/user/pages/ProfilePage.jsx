@@ -2,9 +2,12 @@ import React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import Avatar from '../components/Avatar';
 import InputField from '../../../components/form/InputField';
+import { userState } from '../../../state';
 import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 
 function ProfilePage() {
+  const [user, setUser] = useRecoilState(userState);
   const {
     control,
     setValue,
@@ -45,17 +48,17 @@ function ProfilePage() {
               <InputField
                 className='mb-3'
                 label='Tên của bạn'
-                name='email'
-                type='email'
+                value={user?.fullname}
+                name='name'
                 control={control}
                 noClear
                 disabled
               />
               <InputField
                 className='mb-3'
-                label='Địa chỉ email'
-                name='email'
-                type='email'
+                label='Tên người dùng'
+                value={user?.username}
+                name='username'
                 control={control}
                 noClear
                 disabled

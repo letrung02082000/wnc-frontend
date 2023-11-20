@@ -9,6 +9,7 @@ import MainGuard from '../components/guard/MainGuard';
 import AdminPage from '../features/admin';
 import { SignInPage, SignUpPage } from '../features/auth';
 import { ProfilePage } from '../features/user';
+import UserGuard from '../components/guard/UserGuard';
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,12 @@ const router = createBrowserRouter([
           },
           {
             path: PATH.USER.PROFILE,
-            element: <ProfilePage />,
-          }
+            element: (
+              <UserGuard>
+                <ProfilePage />
+              </UserGuard>
+            ),
+          },
         ],
       },
     ],

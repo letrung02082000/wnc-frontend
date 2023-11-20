@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_URL } from '../constants/endpoints';
 
-const token = localStorage.getItem('token');
+const token = JSON.parse(localStorage.getItem('user') || '{}')?.token;
 const axiosClient = axios.create({
   baseURL: API_URL,
   headers: token && {

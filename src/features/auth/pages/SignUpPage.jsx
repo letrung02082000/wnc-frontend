@@ -4,6 +4,7 @@ import InputField from '../../../components/form/InputField';
 import ReactIcon from '../../../assets/react.svg';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../constants/path';
+import { ToastWrapper } from '../../../utils';
 import { userApi } from '../../../api/userApi';
 
 function SignInPage() {
@@ -39,12 +40,19 @@ function SignInPage() {
       userApi
         .register(data)
         .then((res) => {
-          if (res.status === 201) {
+          ToastWrapper(
+            'Đăng ký thành công, đang chuyển đến trang đăng nhập',
+            'success'
+          );
+          setTimeout(() => {
             navigate(PATH.AUTH.SIGNIN);
-          }
+          }, 3000);
         })
         .catch((err) => {
-          console.log(err);
+          ToastWrapper(
+            err.response.data?.error?.message,
+            'error'
+          );
         });
     })();
   };
