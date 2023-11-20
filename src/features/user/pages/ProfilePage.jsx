@@ -34,6 +34,12 @@ function ProfilePage() {
     setFocus(name);
   };
 
+  const handleLogoutButton = () => {
+    setUser({});
+    localStorage.removeItem('user');
+    location.reload();
+  };
+
   return (
     <Container>
       <Row className='justify-content-center'>
@@ -105,7 +111,7 @@ function ProfilePage() {
           </Row>
           <Row>
             <Col>
-              <Button variant='outline-primary' className='mb-5 w-100'>Đăng xuất</Button>
+              <Button variant='outline-primary' className='mb-5 w-100' onClick={handleLogoutButton}>Đăng xuất</Button>
             </Col>
           </Row>
         </Col>

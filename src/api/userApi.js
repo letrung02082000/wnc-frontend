@@ -33,4 +33,9 @@ export const userApi = {
         const url = '/auth/logout';
         return axiosClient.post(url);
     },
+    updateProfile: () => {
+        const url = '/users/profile';
+        return axiosClient.post(url);
+    }
+
 }
