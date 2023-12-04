@@ -1,13 +1,16 @@
 import { Button, Col, Container, Image, Row } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import InputField from '../../../components/form/InputField';
 import ReactIcon from '../../../assets/react.svg';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../constants/path';
 import { ToastWrapper } from '../../../utils';
-import { userApi } from '../../../api/userApi';
+import { userApi } from '../../../api/user';
+import { MESSAGE } from '@/constants/message';
+import { useState } from 'react';
 
 function SignInPage() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     control,
@@ -36,23 +39,23 @@ function SignInPage() {
   };
 
   const handleSignUpButton = async () => {
+    setLoading(true);
     await handleSubmit((data) => {
       userApi
         .register(data)
-        .then((res) => {
+        .then(() => {
           ToastWrapper(
-            'Đăng ký thành công, đang chuyển đến trang đăng nhập',
+            MESSAGE.USER.REGISTER.SUCCESS,
             'success'
           );
-          setTimeout(() => {
-            navigate(PATH.AUTH.SIGNIN);
-          }, 3000);
+          navigate(PATH.AUTH.ACTIVATION);
         })
         .catch((err) => {
           ToastWrapper(
             err.response.data?.error?.message,
             'error'
           );
+          setLoading(false);
         });
     })();
   };
@@ -60,7 +63,7 @@ function SignInPage() {
   return (
     <Container>
       <Row className='justify-content-center'>
-        <Col xs={6}>
+        <Col xs={4}>
           <Row>
             <Image className='my-5' src={ReactIcon} height={50} />
           </Row>
@@ -69,23 +72,20 @@ function SignInPage() {
               <InputField
                 className='mb-3'
                 label='Tên của bạn'
-                placeholder='Nhập họ tên của bạn'
                 name='fullname'
                 control={control}
                 onClear={handleClearButton}
               />
               <InputField
                 className='mb-3'
-                label='Tên đăng nhập'
-                placeholder='Nhập tên đăng nhập của bạn'
-                name='username'
+                label='Địa chỉ email'
+                name='email'
                 control={control}
                 onClear={handleClearButton}
               />
               <InputField
                 label='Mật khẩu'
                 className='mb-3'
-                placeholder='Nhập mật khẩu của bạn'
                 name='password'
                 type='password'
                 control={control}
@@ -95,15 +95,19 @@ function SignInPage() {
           </Row>
           <Row>
             <Col>
-              <Button className='my-3 w-100' onClick={handleSignUpButton}>
-                Đăng ký
+              <Button
+                disabled={loading}
+                className='my-3 w-100 fw-bold'
+                onClick={handleSignUpButton}
+              >
+                {loading ? 'Đang đăng ký...' : 'Đăng ký'}
               </Button>
             </Col>
           </Row>
           <Row>
             <Col>
               <Button
-                className='w-100'
+                className='w-100 fw-bold'
                 variant='outline-primary'
                 onClick={() => navigate(PATH.AUTH.SIGNIN)}
               >

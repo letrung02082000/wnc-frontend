@@ -9,7 +9,10 @@ export const PATH = {
     AUTH: {
         ROOT: '/auth',
         SIGNIN: '/auth/login',
+        ACTIVATION: '/auth/activate',
         SIGNUP: '/auth/register',
+        FORGOT_PASSWORD: '/auth/forgot-password',
+        GOOGLE: '/auth/google',
     },
     USER: {
         ROOT: '/user',

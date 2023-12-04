@@ -33,7 +33,7 @@ function InputField({
       <Form.Group className={className}>
         {!noLabel && (
           <>
-            <Form.Label className='mb-1'>{label || children || ''}</Form.Label>
+            <Form.Label className='mb-1 fw-bold'>{label || children || ''}</Form.Label>
             <span>{hasAsterisk && <Asterisk />}</span>
           </>
         )}
@@ -74,6 +74,7 @@ const Styles = styled.div`
   .clear-btn {
     position: absolute;
     right: 0.2rem;
+    height: 100%;
   }
 
   .input-wrapper {

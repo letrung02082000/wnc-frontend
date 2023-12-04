@@ -7,7 +7,7 @@ import MainLayout from '../components/layout/MainLayout';
 import AdminGuard from '../components/guard/AdminGuard';
 import MainGuard from '../components/guard/MainGuard';
 import AdminPage from '../features/admin';
-import { SignInPage, SignUpPage } from '../features/auth';
+import { SignInPage, SignUpPage, ForgotPasswordPage, ActivationPage } from '../features/auth';
 import { ProfilePage } from '../features/user';
 import UserGuard from '../components/guard/UserGuard';
 
@@ -29,8 +29,20 @@ const router = createBrowserRouter([
             element: <SignInPage />,
           },
           {
+            path: PATH.AUTH.ACTIVATION,
+            element: <ActivationPage />,
+          },
+          {
+            path: PATH.AUTH.FORGOT_PASSWORD,
+            element: <ForgotPasswordPage />,
+          },
+          {
             path: PATH.AUTH.SIGNUP,
             element: <SignUpPage />,
+          },
+          {
+            path: PATH.AUTH.GOOGLE,
+            element: <SignInPage />,
           },
           {
             path: PATH.USER.PROFILE,

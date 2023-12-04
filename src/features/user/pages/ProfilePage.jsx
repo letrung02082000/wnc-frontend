@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Avatar from '../components/Avatar';
 import InputField from '../../../components/form/InputField';
 import { userState } from '../../../state';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
+import { ToastWrapper } from '@/utils';
+import { userApi } from '@/api/user';
 
 function ProfilePage() {
   const [user, setUser] = useRecoilState(userState);
@@ -40,35 +42,54 @@ function ProfilePage() {
     location.reload();
   };
 
+  const handleChangePassword = () => {
+    handleSubmit((data) => {
+      if(data['new-password'] !== data['confirm-password']) {
+        ToastWrapper('Mật khẩu mới không khớp', 'error');
+        return;
+      }
+
+      if(data['old-password'] === data['new-password']) {
+        ToastWrapper('Mật khẩu mới không được trùng với mật khẩu cũ', 'error');
+        return;
+      }
+
+      userApi.changePassword({
+        password: data['old-password'],
+        newPassword: data['new-password'],
+      }).then(() => {
+        ToastWrapper('Cập nhật mật khẩu thành công', 'success');
+      }).catch((err) => {
+        ToastWrapper(err.response.data?.error?.message, 'error');
+      });
+    })();
+  }
+
   return (
     <Container>
       <Row className='justify-content-center'>
         <Col xs={6}>
           <Row className='justify-content-center my-5'>
-            <Col xs={4}>
-            <Avatar />
-            </Col>
+            <Col xs={4}>{/* <Avatar /> */}</Col>
           </Row>
           <Row>
             <Col>
-              <InputField
-                className='mb-3'
-                label='Tên của bạn'
-                value={user?.fullname}
-                name='name'
-                control={control}
-                noClear
-                disabled
-              />
-              <InputField
-                className='mb-3'
-                label='Tên người dùng'
-                value={user?.username}
-                name='username'
-                control={control}
-                noClear
-                disabled
-              />
+              <Form.Group>
+                <Form.Label className='fw-bold'>Tên của bạn</Form.Label>
+                <Form.Control
+                  className='mb-3'
+                  value={user?.fullname}
+                  disabled
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label className='fw-bold'>Địa chỉ email</Form.Label>
+                <Form.Control
+                  className='mb-3'
+                  value={user?.email}
+                  disabled
+                />
+              </Form.Group>
             </Col>
           </Row>
           <Row>
@@ -106,12 +127,20 @@ function ProfilePage() {
           </Row>
           <Row>
             <Col>
-              <Button className='mb-4 w-100'>Cập nhật mật khẩu</Button>
+              <Button className='mb-4 w-100' onClick={handleChangePassword}>
+                Cập nhật mật khẩu
+              </Button>
             </Col>
           </Row>
           <Row>
             <Col>
-              <Button variant='outline-primary' className='mb-5 w-100' onClick={handleLogoutButton}>Đăng xuất</Button>
+              <Button
+                variant='outline-primary'
+                className='mb-5 w-100'
+                onClick={handleLogoutButton}
+              >
+                Đăng xuất
+              </Button>
             </Col>
           </Row>
         </Col>
