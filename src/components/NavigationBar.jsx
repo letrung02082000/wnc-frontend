@@ -32,7 +32,7 @@ function NavigationBar() {
                     <Nav.Link>
                       <Link
                         to={PATH.AUTH.SIGNIN}
-                        className='btn btn-primary fw-bold'
+                        className='btn btn-primary'
                       >
                         Đăng nhập
                       </Link>
@@ -40,7 +40,7 @@ function NavigationBar() {
                     <Nav.Link>
                       <Link
                         to={PATH.AUTH.SIGNUP}
-                        className='btn btn-outline-primary fw-bold'
+                        className='btn btn-outline-primary'
                       >
                         Đăng ký
                       </Link>

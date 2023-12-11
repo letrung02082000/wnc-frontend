@@ -6,12 +6,10 @@ import NavigationBar from '../NavigationBar';
 
 function MainLayout() {
   return (
-    <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <NavigationBar/>
-        <Outlet />
-      </Suspense>
-    </>
+    <Suspense fallback={<div>Loading...</div>}>
+      <NavigationBar />
+      <Outlet />
+    </Suspense>
   );
 }
 

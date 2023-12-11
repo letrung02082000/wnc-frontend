@@ -19,4 +19,13 @@ export const PATH = {
         PROFILE: '/user/profile',
         CHANGE_PASSWORD: '/user/change-password',
     },
+    CLASS: {
+        ROOT: '/class',
+        DETAIL: '/class/:classId',
+        CREATE: '/class/create',
+        EDIT: '/class/edit/:classId',
+        ME: '/class/me',
+        JOINED: '/class/joined',
+        JOIN: '/class/join',
+    },
 };

@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import AdminSideBar from '../AdminSideBar';
+import NavigationBar from '../NavigationBar';
 
-function AdminLayout() {
+function UserLayout() {
   return <>
     <Suspense fallback={<div>Loading...</div>}>
-        <AdminSideBar/>
+        <NavigationBar/>
         <Outlet/>
     </Suspense>
   </>;
 }
 
-export default AdminLayout;
+export default UserLayout;

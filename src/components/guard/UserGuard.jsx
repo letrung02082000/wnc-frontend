@@ -2,11 +2,11 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { PATH } from '../../constants/path';
 
-function UserGuard({ children }) {
+function UserGuard() {
   if (!localStorage.getItem('user')) {
     window.location.href = PATH.AUTH.SIGNIN;
   }
-  return <>{children}</>;
+  return <Outlet/>;
 }
 
 export default UserGuard;

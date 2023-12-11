@@ -87,11 +87,8 @@ function SignInPage() {
 
   return (
     <Container>
-      <Row className='justify-content-center'>
+      <Row className='justify-content-center mt-5'>
         <Col xs={4}>
-          <Row>
-            <Image className='my-5' src={ReactIcon} height={50} />
-          </Row>
           <Row>
             <Col>
               <InputField
@@ -115,7 +112,7 @@ function SignInPage() {
             <Col>
               <Button
                 disabled={loading}
-                className='my-3 w-100 fw-bold'
+                className='my-3 w-100'
                 onClick={handleSignInButton}
               >
                 {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
@@ -126,7 +123,7 @@ function SignInPage() {
             <Col>
               <Button
                 loading={isSubmitting}
-                className='mb-3 w-100 fw-bold'
+                className='mb-3 w-100'
                 variant='outline-primary'
                 onClick={() => navigate(PATH.AUTH.SIGNUP)}
               >
@@ -138,7 +135,7 @@ function SignInPage() {
             <Col>
               <p className='text-center'>
                 <a
-                  className='w-100 fw-bold'
+                  className='w-100'
                   variant='outline-primary'
                   href={PATH.AUTH.FORGOT_PASSWORD}
                   target='_blank'
@@ -151,7 +148,7 @@ function SignInPage() {
           </Row>
           <Row>
             <Col>
-              <div className='d-flex justify-content-center align-items-center fw-bold mb-3'>
+              <div className='d-flex justify-content-center align-items-center mb-3'>
                 <hr className='w-100' />
                 <span className='text-center mx-3'>Hoặc</span>
                 <hr className='w-100' />
@@ -161,7 +158,7 @@ function SignInPage() {
           <Row>
             <Col>
               <Button
-                className='w-100 fw-bold mb-3'
+                className='w-100 mb-3'
                 variant='outline-danger'
                 onClick={handleGoogleButton}
               >

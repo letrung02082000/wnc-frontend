@@ -62,11 +62,8 @@ function SignInPage() {
 
   return (
     <Container>
-      <Row className='justify-content-center'>
+      <Row className='justify-content-center mt-5'>
         <Col xs={4}>
-          <Row>
-            <Image className='my-5' src={ReactIcon} height={50} />
-          </Row>
           <Row>
             <Col>
               <InputField
@@ -97,7 +94,7 @@ function SignInPage() {
             <Col>
               <Button
                 disabled={loading}
-                className='my-3 w-100 fw-bold'
+                className='my-3 w-100'
                 onClick={handleSignUpButton}
               >
                 {loading ? 'Đang đăng ký...' : 'Đăng ký'}
@@ -107,7 +104,7 @@ function SignInPage() {
           <Row>
             <Col>
               <Button
-                className='w-100 fw-bold'
+                className='w-100'
                 variant='outline-primary'
                 onClick={() => navigate(PATH.AUTH.SIGNIN)}
               >

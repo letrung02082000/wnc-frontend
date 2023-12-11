@@ -21,4 +21,18 @@ export const MESSAGE = {
             FAIL: 'Delete failed',
         },
     },
+    CLASS: {
+        CREATE: {
+            SUCCESS: 'Create successfully',
+            FAIL: 'Create failed',
+        },
+        UPDATE: {
+            SUCCESS: 'Update successfully',
+            FAIL: 'Update failed',
+        },
+        DELETE: {
+            SUCCESS: 'Delete successfully',
+            FAIL: 'Delete failed',
+        },
+    },
 }
