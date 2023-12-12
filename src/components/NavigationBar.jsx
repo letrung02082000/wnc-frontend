@@ -48,6 +48,9 @@ function NavigationBar() {
                   </>
                 ) : (
                   <>
+                  <Nav.Link>
+                      <Link className='btn btn-outline-primary' to={PATH.CLASS.ME}>Quản lý lớp học</Link>
+                    </Nav.Link>{' '}
                     <Nav.Link>
                       <Link to={PATH.USER.PROFILE}>{user?.email}</Link>
                     </Nav.Link>{' '}

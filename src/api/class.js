@@ -42,8 +42,10 @@ export const classApi = {
         });
     },
 
-    inviteByLink: (body) => {
+    inviteByLink: (classId) => {
         const url = '/class/invite/link';
-        return axiosClient.post(url, body);
+        return axiosClient.post(url, {
+            classId
+        });
     }
 }

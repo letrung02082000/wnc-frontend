@@ -38,6 +38,7 @@ function MyClassPage() {
 
   return (
     <Container>
+      <h1 className='text-center my-5'>Lớp học đã tạo</h1>
       <div className='d-flex flex-wrap my-5'>
         {classList.map((item, index) => {
           return <ClassItem className='m-3' key={index} item={item} />;

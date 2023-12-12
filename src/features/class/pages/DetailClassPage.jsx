@@ -16,6 +16,7 @@ import { ToastWrapper } from '@/utils';
 
 function DetailClassPage() {
   const [email, setEmail] = useState('');
+  const [copied, setCopied] = useState(false);
   const [role, setRole] = useState('');
   const [show, setShow] = useState(false);
   const roles = {
@@ -69,6 +70,14 @@ function DetailClassPage() {
     setShow(true);
   }
 
+  const handleCopyButton = () => {
+    navigator.clipboard.writeText(window.location.hostname + '/join?id=' + item?.classId);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  }
+
   return (
     <>
       <Tabs
@@ -79,7 +88,20 @@ function DetailClassPage() {
         <Tab eventKey='home' title='Thông tin lớp học'>
           <Container>
             <Row className='fw-bold'>
-              <p>Mã lớp học: #{item?.classId}</p>
+              <Col>
+                <Row>
+                  <Col>Mã lớp học: #{item?.classId}</Col>
+                  <Col xs={4}>
+                    <Button
+                      onClick={handleCopyButton}
+                      variant='outline-primary'
+                      className='w-100'
+                    >
+                      {copied ? 'Đã' : 'Sao'} chép liên kết tham gia lớp học
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
               <p>Tên lớp học: {item?.name}</p>
               <p>Giáo viên: {item?.fullname}</p>
               <p>Phần học: {item?.part}</p>
@@ -89,7 +111,7 @@ function DetailClassPage() {
           </Container>
         </Tab>
         <Tab eventKey='assignments' title='Bài tập'>
-          Bài tập
+          <p className='fw-bold text-center'>Bạn chưa có bài tập nào được giao!</p>
         </Tab>
         <Tab eventKey='participants' title='Thành viên'>
           <Container className='ms-5 mt-5'>

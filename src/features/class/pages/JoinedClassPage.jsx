@@ -38,6 +38,7 @@ function JoinedClassPage() {
 
   return (
     <Container>
+      <h1 className='text-center my-5'>Lớp học đã tham gia</h1>
       <div className='d-flex flex-wrap my-5'>
         {classList.map((item, index) => {
           return <ClassItem className='m-2' key={index} item={item} />;
