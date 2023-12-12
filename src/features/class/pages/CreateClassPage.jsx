@@ -1,16 +1,11 @@
 import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import InputField from '../../../components/form/InputField';
-import ReactIcon from '../../../assets/react.svg';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PATH } from '../../../constants/path';
-import { userApi } from '../../../api/user';
 import { ToastWrapper } from '../../../utils';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../../state';
 import { MESSAGE } from '@/constants/message';
 import { useState } from 'react';
-import { GOOGLE_LOGIN_URL } from '@/constants/endpoints';
 import { classApi } from '@/api/class';
 
 function CreateClassPage() {
@@ -29,10 +24,10 @@ function CreateClassPage() {
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      name: 'trung test',
-      part: 'trung test',
-      topic: 'trung test',
-      room: 'trung test',
+      name: '',
+      part: '',
+      topic: '',
+      room: '',
     },
     resolver: undefined,
     context: undefined,

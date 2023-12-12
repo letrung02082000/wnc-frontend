@@ -18,10 +18,8 @@ export const classApi = {
 
     getClassParticipants: (id) => {
         const url = `/class/participants`;
-        return axiosClient.get(url, {
-            params: {
-                classId: id
-            }
+        return axiosClient.post(url, {
+            classId: id
         });
     },
 
@@ -35,9 +33,13 @@ export const classApi = {
         return axiosClient.post(url, body);
     },
 
-    inviteByEmail: (body) => {
+    inviteByEmail: (email, classId, role) => {
         const url = '/class/invite/email';
-        return axiosClient.post(url, body);
+        return axiosClient.post(url, {
+            email,
+            classId,
+            role
+        });
     },
 
     inviteByLink: (body) => {

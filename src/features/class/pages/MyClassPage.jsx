@@ -40,7 +40,7 @@ function MyClassPage() {
     <Container>
       <div className='d-flex flex-wrap my-5'>
         {classList.map((item, index) => {
-          return <ClassItem className='m-2' key={index} item={item} />;
+          return <ClassItem className='m-3' key={index} item={item} />;
         })}
       </div>
     </Container>
