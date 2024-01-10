@@ -30,7 +30,17 @@ export const gradeApi = {
         const url = `/grade/create`;
         return axiosClient.post(url, {
             ...body,
-            grade_id: id,
+            classId: id,
         });
-    }
+    },
+
+    updateGradeColumn: (body) => {
+        const url = `/grade/update`;
+        return axiosClient.put(url, body);
+    },
+
+    deleteGradeColumn: (id) => {
+        const url = `/grade/remove/${id}`;
+        return axiosClient.delete(url);
+    },
 }

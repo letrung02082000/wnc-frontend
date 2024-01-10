@@ -2,8 +2,12 @@ import { gradeApi } from '@/api/grade';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { ReactSortable } from 'react-sortablejs';
-import { MdAdd, MdOutlineDragIndicator, MdSaveAs } from 'react-icons/md';
+import { MdAdd, MdDelete, MdOutlineDragIndicator, MdSaveAs } from 'react-icons/md';
 import AddColumn from './AddColumn';
+import { ToastWrapper } from '@/utils';
+import { MESSAGE } from '@/constants/message';
+import ChildColumn from './ChildColumn';
+import ParentColumn from './ParentColumn';
 
 function StructureModal({ classId }) {
   const [boardStructure, setBoardStructure] = useState([]);
@@ -19,6 +23,10 @@ function StructureModal({ classId }) {
   };
 
   useEffect(() => {
+    fetchGradeBoard()
+  }, []);
+
+  const fetchGradeBoard = () => {
     gradeApi
       .getGradeStructure(classId)
       .then((res) => {
@@ -28,60 +36,48 @@ function StructureModal({ classId }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
   const addGradeColumn = (gradeInfo) => {
-    console.log(gradeInfo)
     const {gradeName, gradeParent, gradeScale} = gradeInfo;
 
-    if (!gradeName || !gradeScale || !gradeParent) {
-      return;
-    }
-
-    // gradeApi
-    //   .addGradeColumn(classId, gradeInfo)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    gradeApi
+      .addGradeColumn(classId, gradeInfo)
+      .then((res) => {
+        ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
+        fetchGradeBoard();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const updateGradeColumn = (gradeInfo) => {
-    console.log(gradeInfo)
+    gradeApi
+      .updateGradeColumn(gradeInfo)
+      .then((res) => {
+        ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
+        fetchGradeBoard();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
+  const deleteGradeColumn = (columnId) => {
+    gradeApi.deleteGradeColumn(columnId).then((res) => {
+      ToastWrapper(MESSAGE.GRADE.DELETE.SUCCESS, 'success');
+      fetchGradeBoard();
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
     <ReactSortable list={boardStructure} setList={setBoardStructure}>
       {boardStructure.map((item, idx) => (
-        <div key={item.id} className='p-2 mx-2 my-4'>
-          <Row className='d-flex align-items-center mb-2'>
-            <Col xs={1}>
-              <MdOutlineDragIndicator />
-            </Col>
-            <Col xs={5}>
-              <input className='p-2 w-100' value={item.gradeName} />
-            </Col>
-            <Col xs={3}>
-              <input
-                type='number'
-                className='w-100 p-2'
-                placeholder='Tỉ lệ'
-                onChange={(e) => setGradeScale(e.target.value)}
-                value={item.gradeScale}
-              />
-            </Col>
-            <Col xs={3}>
-              <Button
-                className='w-100'
-                onClick={() => updateGradeColumn(item?.gradeId || 0)}
-              >
-                <MdSaveAs />
-              </Button>
-            </Col>
-          </Row>
+        <div key={item.gradeId} className='p-2 mx-2 my-4'>
+          <ParentColumn item={item} updateGradeColumn={updateGradeColumn} deleteGradeColumn={deleteGradeColumn}/>
           {item.children && (
             <ReactSortable
               list={item.children}
@@ -94,35 +90,7 @@ function StructureModal({ classId }) {
               }
             >
               {item.children.map((child) => (
-                <Row key={child.id} className='d-flex align-items-center mb-2'>
-                  <Col xs={1}></Col>
-                  <Col xs={1}>
-                    <MdOutlineDragIndicator />
-                  </Col>
-                  <Col xs={4}>
-                    <input
-                      className='p-2 w-100'
-                      value={item[child].gradeName}
-                    />
-                  </Col>
-                  <Col xs={3}>
-                    <input
-                      type='number'
-                      className='w-100 p-2'
-                      placeholder='Tỉ lệ'
-                      value={item[child].gradeScale}
-                      onChange={(e) => setGradeScale(e.target.value)}
-                    />
-                  </Col>
-                  <Col xs={3}>
-                    <Button
-                      className='w-100'
-                      onClick={() => updateGradeColumn(item?.gradeId || 0)}
-                    >
-                      <MdSaveAs />
-                    </Button>
-                  </Col>
-                </Row>
+                <ChildColumn key={item[child]?.gradeId} child={child} item={item} updateGradeColumn={updateGradeColumn} deleteGradeColumn={deleteGradeColumn}/>
               ))}
 
               <AddColumn addGradeColumn={addGradeColumn} item={item} />

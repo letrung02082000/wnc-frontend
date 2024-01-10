@@ -23,10 +23,7 @@ const GradePage = () => {
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const [rowData, setRowData] = useState();
-  const [columnDefs, setColumnDefs] = useState([
-    { field: 'fullname', headerName: 'Họ và tên' },
-    { field: 'mssv', headerName: 'Mã sinh viên' },
-  ]);
+  const [columnDefs, setColumnDefs] = useState([]);
 
   const {
     control,
@@ -80,37 +77,48 @@ const GradePage = () => {
   }, []);
       
   const onGridReady = useCallback((params) => {
-    gradeApi.getGradeStructure(classId).then((res) => {
-      const structure = res.data;
+    fetchGradeStructure();
+  }, []);
 
-      const newStructure = structure.map((item) => {
-        if(item?.children?.length > 0) {
+  const fetchGradeStructure = useCallback(() => {
+    gradeApi
+      .getGradeStructure(classId)
+      .then((res) => {
+        const structure = res.data;
+
+        const newStructure = structure.map((item) => {
+          if (item?.children?.length > 0) {
+            return {
+              field: item.gradeId.toString(),
+              headerName: item.gradeName,
+              editable: true,
+              children: item.children.map((child) => {
+                return {
+                  field: item[`${child}`].gradeId.toString(),
+                  headerName: item[`${child}`].gradeName,
+                  editable: true,
+                };
+              }),
+            };
+          }
+
           return {
             field: item.gradeId.toString(),
             headerName: item.gradeName,
             editable: true,
-            children: item.children.map((child) => {
-              return {
-                field: item[`${child}`].gradeId.toString(),
-                headerName: item[`${child}`].gradeName,
-                editable: true,
-              }
-            })
-          }
-        }
+          };
+        });
 
-        return {
-          field: item.gradeId.toString(),
-          headerName: item.gradeName,
-          editable: true,
-        };
+        setColumnDefs((prev) => [
+          { field: 'fullname', headerName: 'Họ và tên' },
+          { field: 'mssv', headerName: 'Mã sinh viên' },
+          ...newStructure,
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-      setColumnDefs((prev) => [...prev, ...newStructure]);
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
+  });
 
   const handleCellValueChanged = useCallback((params) => {
     const newData = {
@@ -130,7 +138,10 @@ const GradePage = () => {
 
   const handleClose = () => setShow(false);
 
-  const handleStructureClose = () => setStructureShow(false);
+  const handleStructureClose = () => {
+    setStructureShow(false);
+    fetchGradeStructure();
+  };
 
   const handleClearButton = (name) => {
     setValue(name, '');
@@ -222,7 +233,7 @@ const GradePage = () => {
           </Modal.Footer>
         </Form>
       </Modal>
-      <Modal show={structureShow} onHide={handleStructureClose}>
+      <Modal show={structureShow} onHide={handleStructureClose} size='lg'>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
           <StructureModal classId={classId}/>

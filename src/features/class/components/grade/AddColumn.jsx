@@ -14,6 +14,7 @@ function AddColumn({ addGradeColumn, item }) {
           type='text'
           className='w-100 p-2'
           placeholder='Tên cột'
+          value={gradeName}
           onChange={(e) => setGradeName(e.target.value)}
         />
       </Col>
@@ -22,21 +23,27 @@ function AddColumn({ addGradeColumn, item }) {
           type='number'
           className='w-100 p-2'
           placeholder='Tỉ lệ'
+          value={gradeScale}
           onChange={(e) => setGradeScale(e.target.value)}
         />
       </Col>
-      <Col xs={3}>
+      <Col xs={2}>
         <Button
           className='w-100'
-          onClick={() => addGradeColumn({
-            gradeParent: item?.gradeId || 0,
-            gradeName,
-            gradeScale,
-          })}
+          onClick={() => {
+            addGradeColumn({
+              gradeParent: item?.gradeId || 0,
+              gradeName,
+              gradeScale,
+            });
+            setGradeName('');
+            setGradeScale(0);
+          }}
         >
           <MdAdd />
         </Button>
       </Col>
+      <Col xs={1}></Col>
     </Row>
   );
 }
