@@ -75,7 +75,7 @@ function SignInPage() {
           }, 3000);
         })
         .catch((err) => {
-          ToastWrapper(err.response.data?.error?.message, 'error');
+          ToastWrapper(err.response.data?.error?.message || MESSAGE.USER.LOGIN.FAIL, 'error');
           setLoading(false);
         });
     })();
