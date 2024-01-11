@@ -50,4 +50,9 @@ export const MESSAGE = {
             FAIL: 'Delete failed',
         },
     },
+
+    IMPORT: {
+        SUCCESS: 'Import successfully',
+        FAIL: 'Import failed',
+    },
 }

@@ -9,7 +9,7 @@ function AddColumn({ addGradeColumn, item }) {
   return (
     <Row className='d-flex align-items-center'>
       <Col xs={1}></Col>
-      <Col xs={5}>
+      <Col xs={6}>
         <input
           type='text'
           className='w-100 p-2'
@@ -27,7 +27,7 @@ function AddColumn({ addGradeColumn, item }) {
           onChange={(e) => setGradeScale(e.target.value)}
         />
       </Col>
-      <Col xs={2}>
+      <Col xs={1}>
         <Button
           className='w-100'
           onClick={() => {

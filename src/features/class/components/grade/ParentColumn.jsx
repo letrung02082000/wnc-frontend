@@ -10,7 +10,7 @@ function ParentColumn({ item, updateGradeColumn, deleteGradeColumn }) {
       <Col xs={1}>
         <MdOutlineDragIndicator />
       </Col>
-      <Col xs={5}>
+      <Col xs={6}>
         <input
           className='p-2 w-100'
           onChange={(e) => setGradeName(e.target.value)}
@@ -26,7 +26,7 @@ function ParentColumn({ item, updateGradeColumn, deleteGradeColumn }) {
           onChange={(e) => setGradeScale(e.target.value)}
         />
       </Col>
-      <Col xs={2}>
+      <Col xs={1}>
         <Button
           className='w-100'
           onClick={() =>

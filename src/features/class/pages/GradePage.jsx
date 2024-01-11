@@ -8,22 +8,30 @@ import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { gradeApi } from '@/api/grade';
 import { useParams } from 'react-router-dom';
-import { ToastWrapper } from '@/utils';
+import { ToastWrapper, exportToCSV } from '@/utils';
 import { MESSAGE } from '@/constants/message';
 import { useForm } from 'react-hook-form';
 import InputField from '@/components/form/InputField';
 import StructureModal from '../components/grade/StructureModal';
+import { classApi } from '@/api/class';
+import ImportGradeModal from '../components/grade/ImportGradeModal';
+import ImportStudentModal from '../components/grade/ImportStudentModal';
 
 // Create new GridExample component
 const GradePage = () => {
   const { classId } = useParams();
   const [show, setShow] = useState(false);
   const [structureShow, setStructureShow] = useState(false);
+  const [importGradeShow, setImportGradeShow] = useState(false);
+  const [importStudentShow, setImportStudentShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const [rowData, setRowData] = useState();
   const [columnDefs, setColumnDefs] = useState([]);
+  const [studentList, setStudentList] = useState({});
+  const [gradeBoard, setGradeBoard] = useState([]);
+  const [gradeList, setGradeList] = useState([]);
 
   const {
     control,
@@ -55,6 +63,39 @@ const GradePage = () => {
 
   useEffect(() => {
     fetchGradeBoard();
+    fetchStudentList();
+  }, []);
+
+  useEffect(() => {
+    const data = gradeBoard.map((item) => {
+      return {
+        ...item,
+        ...studentList[item.mssv],
+      };
+    });
+
+    setRowData(data);
+  }, [Object.keys(studentList).length, gradeBoard]);
+
+  const fetchStudentList = useCallback(() => {
+    classApi
+      .getClassParticipants(classId)
+      .then((res) => {
+        let students = {};
+
+        for (let index = 0; index < res?.data?.students?.length; index++) {
+          const student = res?.data?.students[index];
+
+          if (student.mssv) {
+            students[student.mssv] = student;
+          }
+        }
+
+        setStudentList(students);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const fetchGradeBoard = useCallback(() => {
@@ -69,13 +110,13 @@ const GradePage = () => {
           };
         });
 
-        setRowData(data);
+        setGradeBoard(data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-      
+
   const onGridReady = useCallback((params) => {
     fetchGradeStructure();
   }, []);
@@ -85,6 +126,29 @@ const GradePage = () => {
       .getGradeStructure(classId)
       .then((res) => {
         const structure = res.data;
+        let gradeList = [];
+        
+        for (let index = 0; index < structure.length; index++) {
+          const element = structure[index];
+          console.log(element)
+          gradeList.push({
+            value: element.gradeId,
+            label: element.gradeName,
+          });
+          
+          if (element?.children?.length > 0)
+          {
+            for (let childIndex = 0; childIndex < element.children.length; childIndex++) {
+              const childElement = element.children[childIndex];
+              gradeList.push({
+                value: childElement,
+                label: element[`${childElement}`].gradeName,
+              });
+            }
+          }
+        }
+
+        setGradeList(gradeList);
 
         const newStructure = structure.map((item) => {
           if (item?.children?.length > 0) {
@@ -110,6 +174,7 @@ const GradePage = () => {
         });
 
         setColumnDefs((prev) => [
+          { field: 'email', headerName: 'Địa chỉ email' },
           { field: 'fullname', headerName: 'Họ và tên' },
           { field: 'mssv', headerName: 'Mã sinh viên' },
           ...newStructure,
@@ -126,14 +191,16 @@ const GradePage = () => {
       classId: classId,
       gradeId: parseInt(params.colDef.field),
       point: params.newValue,
-    }
+    };
 
-    gradeApi.markGrade(newData).then((res) => {
-      console.log(res);
-      ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
-    }).catch((err) => {
-      console.log(err);
-    });
+    gradeApi
+      .markGrade(newData)
+      .then((res) => {
+        ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const handleClose = () => setShow(false);
@@ -150,21 +217,31 @@ const GradePage = () => {
 
   const handleAddStudentButton = async () => {
     setLoading(true);
-    
+
     await handleSubmit((data) => {
-      console.log(data)
-      gradeApi.addStudent(classId, data).then((res) => {
-        setLoading(false);
-        setShow(false);
-        ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
-        fetchGradeBoard();
-      }).catch((err) => {
-        setLoading(false);
-        console.log(err);
-      });
-  
+      gradeApi
+        .addStudent(classId, data)
+        .then((res) => {
+          setLoading(false);
+          setShow(false);
+          ToastWrapper(MESSAGE.GRADE.CREATE.SUCCESS, 'success');
+          fetchGradeBoard();
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
     })();
+  };
+
+  const handleImportGradeClose = () => {
+    fetchGradeBoard();
+    setImportGradeShow(false);
   }
+  const handleImportStudentClose = () => {
+    fetchGradeBoard();
+    setImportStudentShow(false);
+  };
 
   return (
     <>
@@ -233,10 +310,11 @@ const GradePage = () => {
           </Modal.Footer>
         </Form>
       </Modal>
+
       <Modal show={structureShow} onHide={handleStructureClose} size='lg'>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
-          <StructureModal classId={classId}/>
+          <StructureModal classId={classId} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleStructureClose}>
@@ -244,14 +322,53 @@ const GradePage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Modal show={importGradeShow} onHide={handleImportGradeClose}>
+      <Modal.Header closeButton>
+          <Modal.Title>Nhập điểm</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ImportGradeModal gradeList={gradeList}/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleImportGradeClose}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={importStudentShow} onHide={handleImportStudentClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Nhập danh sách sinh viên</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ImportStudentModal classId={classId} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleImportStudentClose}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <div className='d-flex w-100 my-3 justify-content-between'>
         <div>
           <Button className='ms-2' onClick={() => setShow(true)}>
             Thêm sinh viên
           </Button>
-          <Button className='ms-2' onClick={() => setStructureShow(true)}>Cấu trúc bảng điểm</Button>
+          <Button className='ms-2' onClick={() => setStructureShow(true)}>
+            Cấu trúc bảng điểm
+          </Button>
+          <Button className='ms-2' onClick={() => setImportStudentShow(true)}>
+            Nhập danh sách sinh viên
+          </Button>
+          <Button className='ms-2' onClick={() => setImportGradeShow(true)}>
+            Nhập điểm
+          </Button>
         </div>
-        <Button className='me-2'>Xuất bảng điểm</Button>
+        <Button className='me-2' onClick={() => exportToCSV(rowData, 'data')}>
+          Xuất bảng điểm
+        </Button>
       </div>
     </>
   );
