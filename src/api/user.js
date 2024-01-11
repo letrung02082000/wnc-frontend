@@ -21,4 +21,12 @@ export const userApi = {
         const url = '/auth/google';
         return axiosClient.get(url);
     },
+    getProfile: () => {
+        const url = '/user/profile';
+        return axiosClient.get(url);
+    },
+    updateProfile: (body) => {
+        const url = '/user/profile';
+        return axiosClient.post(url, body);
+    },
 }

@@ -1,15 +1,16 @@
-import React from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import Avatar from '../components/Avatar';
 import InputField from '../../../components/form/InputField';
-import { userState } from '../../../state';
 import { useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
 import { ToastWrapper } from '@/utils';
 import { userApi } from '@/api/user';
+import { MESSAGE } from '@/constants/message';
+import UpdateProfileModal from '../components/UpdateProfileModal';
 
 function ProfilePage() {
-  const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useState();
+  const [showUpdateProfileModal, setShowUpdateProfileModal] = useState(false);
   const {
     control,
     setValue,
@@ -22,7 +23,7 @@ function ProfilePage() {
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    defaultValues: {},
+    defaultValues: user,
     resolver: undefined,
     context: undefined,
     shouldFocusError: true,
@@ -44,25 +45,62 @@ function ProfilePage() {
 
   const handleChangePassword = () => {
     handleSubmit((data) => {
-      if(data['new-password'] !== data['confirm-password']) {
+      if (data['new-password'] !== data['confirm-password']) {
         ToastWrapper('Mật khẩu mới không khớp', 'error');
         return;
       }
 
-      if(data['old-password'] === data['new-password']) {
+      if (data['old-password'] === data['new-password']) {
         ToastWrapper('Mật khẩu mới không được trùng với mật khẩu cũ', 'error');
         return;
       }
 
-      userApi.changePassword({
-        password: data['old-password'],
-        newPassword: data['new-password'],
-      }).then(() => {
-        ToastWrapper('Cập nhật mật khẩu thành công', 'success');
-      }).catch((err) => {
-        ToastWrapper(err.response.data?.error?.message, 'error');
-      });
+      userApi
+        .changePassword({
+          password: data['old-password'],
+          newPassword: data['new-password'],
+        })
+        .then(() => {
+          ToastWrapper('Cập nhật mật khẩu thành công', 'success');
+        })
+        .catch((err) => {
+          ToastWrapper(err.response.data?.error?.message, 'error');
+        });
     })();
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = () => {
+    userApi
+      .getProfile()
+      .then((res) => {
+        setUser(res.data);
+        setValue('fullname', res.data.fullname);
+        setValue('email', res.data.email);
+        setValue('phoneNumber', res.data.phoneNumber);
+        setValue('dob', res.data.dob);
+        setValue('address', res.data.address);
+      })
+      .catch((err) => {
+        ToastWrapper(MESSAGE.USER.GET_PROFILE.FAIL, 'error');
+      });
+  }
+
+  const handleUpdateProfile = (data) => {
+    setShowUpdateProfileModal(false);
+    userApi
+        .updateProfile(data)
+        .then(() => {
+          ToastWrapper('Cập nhật thông tin thành công', 'success');
+        })
+        .catch((err) => {
+          ToastWrapper(err.response.data?.error?.message, 'error');
+        }).finally(() => {
+          fetchUser();
+        });
   }
 
   return (
@@ -74,22 +112,58 @@ function ProfilePage() {
           </Row>
           <Row>
             <Col>
-              <Form.Group>
-                <Form.Label className='fw-bold'>Tên của bạn</Form.Label>
-                <Form.Control
-                  className='mb-3'
-                  value={user?.fullname}
-                  disabled
-                />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label className='fw-bold'>Địa chỉ email</Form.Label>
-                <Form.Control
-                  className='mb-3'
-                  value={user?.email}
-                  disabled
-                />
-              </Form.Group>
+              <h5 className='mb-3'>Thông tin cá nhân</h5>
+              <InputField
+                className='mb-3'
+                label='Họ tên'
+                name='fullname'
+                control={control}
+                onClear={handleClearButton}
+                disabled
+              />
+              <InputField
+                className='mb-3'
+                label='Email'
+                name='email'
+                type='email'
+                control={control}
+                onClear={handleClearButton}
+                disabled
+              />
+              <InputField
+                className='mb-3'
+                label='Số điện thoại'
+                name='phoneNumber'
+                control={control}
+                onClear={handleClearButton}
+                disabled
+              />
+              <InputField
+                className='mb-3'
+                label='Ngày sinh'
+                name='dob'
+                control={control}
+                onClear={handleClearButton}
+                disabled
+              />
+              <InputField
+                className='mb-3'
+                label='Địa chỉ'
+                name='address'
+                control={control}
+                onClear={handleClearButton}
+                disabled
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button
+                className='mb-4 w-100'
+                onClick={() => setShowUpdateProfileModal(true)}
+              >
+                Cập nhật thông tin
+              </Button>
             </Col>
           </Row>
           <Row>
@@ -145,6 +219,7 @@ function ProfilePage() {
           </Row>
         </Col>
       </Row>
+      <UpdateProfileModal show={showUpdateProfileModal} setShow={setShowUpdateProfileModal} onSubmit={handleUpdateProfile}/>
     </Container>
   );
 }

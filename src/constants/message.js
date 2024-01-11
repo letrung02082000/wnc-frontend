@@ -20,6 +20,10 @@ export const MESSAGE = {
             SUCCESS: 'Delete successfully',
             FAIL: 'Delete failed',
         },
+        GET_PROFILE: {
+            SUCCESS: 'Get profile successfully',
+            FAIL: 'Get profile failed',
+        },
     },
     CLASS: {
         CREATE: {

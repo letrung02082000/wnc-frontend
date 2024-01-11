@@ -19,7 +19,7 @@ function ImportStudentModal({classId}) {
     exportToCSV(csvData, fileName);
   };
 
-  const handleResponse = (res) => {
+const handleResponse = (res) => {
     ToastWrapper(MESSAGE.IMPORT.SUCCESS, 'success');
   };
 
