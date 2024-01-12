@@ -39,6 +39,11 @@ export const gradeApi = {
         return axiosClient.put(url, body);
     },
 
+    updateGradeStructure: (classId, body) => {
+        const url = `/grade/arrange/${classId}`;
+        return axiosClient.post(url, body);
+    },
+
     deleteGradeColumn: (id) => {
         const url = `/grade/remove/${id}`;
         return axiosClient.delete(url);
@@ -64,5 +69,17 @@ export const gradeApi = {
     createReview: (body) => {
         const url = `/grade-review/create`;
         return axiosClient.post(url, body);
+    },
+
+    closeReview: (reviewId) => {
+        const url = `/grade-review/close/${reviewId}`;
+        return axiosClient.post(url);
+    },
+
+    finalizeGrade: (gradeId) => {
+        const url = `/grade/finalized`;
+        return axiosClient.post(url, {
+            gradeId
+        });
     },
 }

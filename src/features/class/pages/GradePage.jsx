@@ -23,7 +23,7 @@ import ReviewModal from '../components/grade/ReviewModal';
 const GradePage = () => {
   const { classId } = useParams();
   const [show, setShow] = useState(false);
-  const [reviewShow, setReviewShow] = useState(false);
+  const [boardStructure, setBoardStructure] = useState([]);
   const [structureShow, setStructureShow] = useState(false);
   const [importGradeShow, setImportGradeShow] = useState(false);
   const [importStudentShow, setImportStudentShow] = useState(false);
@@ -34,6 +34,7 @@ const GradePage = () => {
   const [columnDefs, setColumnDefs] = useState([]);
   const [studentList, setStudentList] = useState({});
   const [gradeBoard, setGradeBoard] = useState([]);
+  const [showUpdateConfirmModal, setShowUpdateConfirmModal] = useState(false);
   const [gradeList, setGradeList] = useState([]);
   const [classRole, setClassRole] = useState('');
   const CLASS_ROLE = {
@@ -130,6 +131,7 @@ const GradePage = () => {
               fullname: data?.fullname,
               mssv: data?.mssv,
               ...data?.grades,
+              total: data?.total
             }
           ]
           
@@ -140,6 +142,7 @@ const GradePage = () => {
               fullname: item.fullname,
               mssv: item.mssv,
               ...item.grades,
+              total: item?.total,
             };
           });
 
@@ -212,6 +215,7 @@ const GradePage = () => {
           { field: 'fullname', headerName: 'Họ và tên' },
           { field: 'mssv', headerName: 'Mã sinh viên' },
           ...newStructure,
+          { field: 'total', headerName: 'Điểm tổng kết' },
         ]);
       })
       .catch((err) => {
@@ -277,11 +281,37 @@ const GradePage = () => {
     fetchGradeBoard();
     setImportStudentShow(false);
   };
-  
-  const handleReviewClose = () => {
-    fetchGradeBoard();
-    setReviewShow(false);
+
+  const handleUpdateStructure = () => {
+    gradeApi.updateGradeStructure(classId, boardStructure).then((res) => {
+      ToastWrapper(MESSAGE.GRADE.UPDATE.SUCCESS, 'success');
+      fetchGradeStructure();
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const handleUpdateConfirmClose = () => {
+    setShowUpdateConfirmModal(false);
   };
+
+  const handleExportGradeBoard = () => {
+    const exportData = rowData.map((item) => {
+      const ret = {
+        ['Họ và tên']: item.fullname,
+        ['Mã số sinh viên']: item.mssv,
+        ['Điểm tổng kết']: item.total,
+      };
+
+      gradeList.forEach((grade) => {
+        ret[grade.label] = item[grade.value];
+      });
+
+      return ret;
+    });
+    console.log(exportData)
+    exportToCSV(exportData, 'BangDiem')
+  }
 
   return (
     <>
@@ -356,9 +386,20 @@ const GradePage = () => {
           <Modal.Title>Cấu trúc bảng điểm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <StructureModal classId={classId} classRole={classRole}/>
+          <StructureModal
+            classId={classId}
+            classRole={classRole}
+            boardStructure={boardStructure}
+            setBoardStructure={setBoardStructure}
+          />
         </Modal.Body>
         <Modal.Footer>
+          {['teacher', 'owner'].includes(classRole) && (
+            <Button variant='primary' onClick={handleUpdateStructure}>
+              Cập nhật cấu trúc
+            </Button>
+          )}
+
           <Button variant='secondary' onClick={handleStructureClose}>
             Đóng
           </Button>
@@ -393,6 +434,26 @@ const GradePage = () => {
         </Modal.Footer>
       </Modal>
 
+      <Modal show={showUpdateConfirmModal} onHide={handleUpdateConfirmClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Thông báo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Bạn có chắc chắn muốn lưu thay đổi cấu trúc điểm của lớp học này
+            không?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='primary' onClick={handleUpdateConfirmClose}>
+            Huỷ
+          </Button>
+          <Button variant='danger' onClick={handleUpdateStructure}>
+            Chắc chắn
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {['teacher', 'owner'].includes(classRole) && (
         <div className='d-flex w-100 my-3 justify-content-between'>
           <div>
@@ -409,14 +470,14 @@ const GradePage = () => {
               Nhập điểm
             </Button>
           </div>
-          <Button className='me-2' onClick={() => exportToCSV(rowData, 'data')}>
+          <Button className='me-2' onClick={handleExportGradeBoard}>
             Xuất bảng điểm
           </Button>
         </div>
       )}
 
       {classRole === CLASS_ROLE.STUDENT && (
-        <div>
+        <div className='d-flex w-100 my-3 justify-content-between'>
           <Button className='ms-2' onClick={() => setStructureShow(true)}>
             Cấu trúc bảng điểm
           </Button>

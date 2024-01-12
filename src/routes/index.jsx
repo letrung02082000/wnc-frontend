@@ -23,6 +23,7 @@ import JoinClassPage from '@/features/class/pages/JoinClassPage';
 import CreateClassPage from '@/features/class/pages/CreateClassPage';
 import DetailClassPage from '@/features/class/pages/DetailClassPage';
 import GradePage from '@/features/class/pages/GradePage';
+import DetailReviewPage from '@/features/class/pages/DetailReviewPage';
 
 const router = createBrowserRouter([
   {
@@ -124,7 +125,11 @@ const router = createBrowserRouter([
           {
             path: PATH.CLASS.GRADE,
             element: <GradePage />,
-          }
+          },
+          {
+            path: PATH.CLASS.REVIEW,
+            element: <DetailReviewPage />,
+          },
         ],
       },
     ],

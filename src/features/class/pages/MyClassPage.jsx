@@ -31,7 +31,7 @@ function MyClassPage() {
   if(!classList.length) {
     return (
       <Container>
-        <h5 className='text-center mt-5'>Bạn chưa tham gia lớp học nào</h5>
+        <h5 className='text-center mt-5'>Bạn chưa tạo lớp học nào</h5>
       </Container>
     )
   }
