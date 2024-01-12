@@ -29,5 +29,6 @@ export const PATH = {
         ME: '/class/me',
         JOINED: '/class/joined',
         JOIN: '/class/join',
+        GRADE: '/class/:classId/grade',
     },
 };

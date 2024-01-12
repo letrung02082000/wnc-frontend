@@ -24,6 +24,7 @@ import CreateClassPage from '@/features/class/pages/CreateClassPage';
 import DetailClassPage from '@/features/class/pages/DetailClassPage';
 import AccountManagementPage from '@/features/admin/pages/AccountManagementPage';
 import ClassManagementPage from '@/features/admin/pages/ClassManagementPage';
+import GradePage from '@/features/class/pages/GradePage';
 
 const router = createBrowserRouter([
   {
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
           {
             path: PATH.CLASS.DETAIL,
             element: <DetailClassPage />,
+          },
+          {
+            path: PATH.CLASS.GRADE,
+            element: <GradePage />,
           }
         ],
       },

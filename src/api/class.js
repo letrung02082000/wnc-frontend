@@ -47,5 +47,10 @@ export const classApi = {
         return axiosClient.post(url, {
             classId
         });
+    },
+
+    checkRoleInClass: (classId) => {
+        const url = `/class/role/${classId}`;
+        return axiosClient.get(url);
     }
 }
