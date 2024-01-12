@@ -15,7 +15,7 @@ function ClassInfoPage({ item }) {
 
   const handleCopyButton = () => {
     navigator.clipboard.writeText(
-      window.location.hostname + '/join?id=' + item?.classId
+      window.location.hostname + '/class/join?id=' + item?.classId
     );
     setCopied(true);
     setTimeout(() => {
