@@ -47,5 +47,20 @@ export const classApi = {
         return axiosClient.post(url, {
             classId
         });
-    }
+    },
+
+    checkRoleInClass: (classId) => {
+        const url = `/class/role/${classId}`;
+        return axiosClient.get(url);
+    },
+
+    getNotifications: () => {
+        const url = `/noti`;
+        return axiosClient.get(url);
+    },
+
+    readNotification: (notiId) => {
+        const url = `/noti/${notiId}`;
+        return axiosClient.post(url);
+    },
 }

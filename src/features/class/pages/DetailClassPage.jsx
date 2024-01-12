@@ -13,10 +13,13 @@ import {
 import { Form, useLocation, useParams } from 'react-router-dom';
 import Profile from '@/assets/images/profile.png';
 import { ToastWrapper } from '@/utils';
+import GradePage from './GradePage';
+import './style.css';
+import ReviewPage from './ReviewPage';
+import ClassInfoPage from './ClassInfoPage';
 
 function DetailClassPage() {
   const [email, setEmail] = useState('');
-  const [copied, setCopied] = useState(false);
   const [role, setRole] = useState('');
   const [show, setShow] = useState(false);
   const roles = {
@@ -39,12 +42,10 @@ function DetailClassPage() {
         console.log(err);
       })
       .finally(() => {
-        console.log('done');
       });
   }, []);
-
+  
   const handleInviteButton = () => {
-    console.log(email, role);
     setLoading(true);
     classApi
       .inviteByEmail(email, item?.classId, role)
@@ -70,48 +71,29 @@ function DetailClassPage() {
     setShow(true);
   }
 
-  const handleCopyButton = () => {
-    navigator.clipboard.writeText(window.location.hostname + '/join?id=' + item?.classId);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
-  }
-
   return (
     <>
       <Tabs
         defaultActiveKey='home'
         id='uncontrolled-tab-example'
-        className='mb-3'
+        style={{
+          height: '8vh',
+        }}
       >
         <Tab eventKey='home' title='Thông tin lớp học'>
-          <Container>
-            <Row className='fw-bold'>
-              <Col>
-                <Row>
-                  <Col>Mã lớp học: #{item?.classId}</Col>
-                  <Col xs={4}>
-                    <Button
-                      onClick={handleCopyButton}
-                      variant='outline-primary'
-                      className='w-100'
-                    >
-                      {copied ? 'Đã' : 'Sao'} chép liên kết tham gia lớp học
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-              <p>Tên lớp học: {item?.name}</p>
-              <p>Giáo viên: {item?.fullname}</p>
-              <p>Phần học: {item?.part}</p>
-              <p>Chủ đề: {item?.topic}</p>
-              <p>Mã phòng: {item?.room}</p>
-            </Row>
-          </Container>
+          <ClassInfoPage item={item}/>
         </Tab>
-        <Tab eventKey='assignments' title='Bài tập'>
-          <p className='fw-bold text-center'>Bạn chưa có bài tập nào được giao!</p>
+        <Tab
+          eventKey='assignments'
+          title='Bảng điểm'
+        >
+          <GradePage/>
+        </Tab>
+        <Tab
+          eventKey='reviews'
+          title='Xem lại'
+        >
+          <ReviewPage classId={item?.classId}/>
         </Tab>
         <Tab eventKey='participants' title='Thành viên'>
           <Container className='ms-5 mt-5'>

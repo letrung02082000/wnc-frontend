@@ -21,4 +21,19 @@ export const userApi = {
         const url = '/auth/google';
         return axiosClient.get(url);
     },
+    getProfile: () => {
+        const url = '/user/profile';
+        return axiosClient.get(url);
+    },
+    updateProfile: (body) => {
+        const url = '/user/profile';
+        return axiosClient.post(url, body);
+    },
+    updateStudentId: (studentId) => {
+        console.log(studentId)
+        const url = '/user/map-mssv';
+        return axiosClient.post(url, {
+            mssv: studentId,
+        });
+    },
 }

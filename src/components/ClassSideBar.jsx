@@ -11,8 +11,15 @@ import {
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
+import { MdAccountCircle } from 'react-icons/md';
+import { Button, Form, Offcanvas } from 'react-bootstrap';
+import { userState } from '@/state';
+import { useRecoilState } from 'recoil';
+import { PATH } from '@/constants/path';
 
 function ClassSideBar({ menu, title, root, collapsed, setCollapsed }) {
+  const [user, setUser] = useRecoilState(userState);
+  const [canvasShow, setCanvasShow] = React.useState(false);
   const handleLogout = () => {
     localStorage.removeItem('user');
     window.location.href = '/';
@@ -21,7 +28,9 @@ function ClassSideBar({ menu, title, root, collapsed, setCollapsed }) {
   return (
     <ProSidebar className='side-bar' collapsed={collapsed}>
       <SidebarHeader className='header d-flex justify-content-center'>
-        <div className='my-3 fs-4 text-uppercase fw-bold'>{!collapsed ? title : null}</div>
+        <div className='my-3 fs-4 text-uppercase fw-bold'>
+          {!collapsed ? title : null}
+        </div>
       </SidebarHeader>
       <SidebarContent className='nav-bar-left'>
         <Menu iconShape='circle'>
@@ -49,7 +58,9 @@ function ClassSideBar({ menu, title, root, collapsed, setCollapsed }) {
                         icon={submenu.icon}
                         className='mb-2'
                       >
-                        <Link to={root ? `${root}/${submenu.path}` : submenu.path}>
+                        <Link
+                          to={root ? `${root}/${submenu.path}` : submenu.path}
+                        >
                           {submenu.label}
                         </Link>
                       </MenuItem>
@@ -73,11 +84,36 @@ function ClassSideBar({ menu, title, root, collapsed, setCollapsed }) {
       </SidebarContent>
       <SidebarFooter>
         <Menu>
-          <MenuItem icon={<CiLogout />}>
-            <div onClick={handleLogout}>Đăng xuất</div>
+          <MenuItem icon={<MdAccountCircle />}>
+            <div onClick={() => setCanvasShow(true)}>Tài khoản</div>
           </MenuItem>
         </Menu>
       </SidebarFooter>
+      <Offcanvas
+        show={canvasShow}
+        onHide={() => setCanvasShow(false)}
+        placement='end'
+      >
+        <Offcanvas.Header closeButton>
+          <div className='d-flex flex-column'>
+            <Offcanvas.Title>Xin chào {user?.fullname}</Offcanvas.Title>
+            <Form.Text>{user?.email}</Form.Text>
+          </div>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <div className='d-flex flex-column'>
+            <Link
+              className='btn btn-outline-primary my-2'
+              to={PATH.USER.PROFILE}
+            >
+              Cập nhật thông tin
+            </Link>
+            <Button onClick={handleLogout} className='my-2'>
+              Đăng xuất
+            </Button>
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
     </ProSidebar>
   );
 }

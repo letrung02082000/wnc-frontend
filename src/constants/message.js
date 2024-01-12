@@ -20,6 +20,10 @@ export const MESSAGE = {
             SUCCESS: 'Delete successfully',
             FAIL: 'Delete failed',
         },
+        GET_PROFILE: {
+            SUCCESS: 'Get profile successfully',
+            FAIL: 'Get profile failed',
+        },
     },
     CLASS: {
         CREATE: {
@@ -34,5 +38,25 @@ export const MESSAGE = {
             SUCCESS: 'Delete successfully',
             FAIL: 'Delete failed',
         },
+    },
+
+    GRADE: {
+        CREATE: {
+            SUCCESS: 'Create successfully',
+            FAIL: 'Create failed',
+        },
+        UPDATE: {
+            SUCCESS: 'Update successfully',
+            FAIL: 'Update failed',
+        },
+        DELETE: {
+            SUCCESS: 'Delete successfully',
+            FAIL: 'Delete failed',
+        },
+    },
+
+    IMPORT: {
+        SUCCESS: 'Import successfully',
+        FAIL: 'Import failed',
     },
 }

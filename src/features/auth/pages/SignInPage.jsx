@@ -71,11 +71,11 @@ function SignInPage() {
           localStorage.setItem('user', JSON.stringify(res?.data));
           setUser(res?.data);
           setTimeout(() => {
-            navigate(PATH.USER.PROFILE);
+            window.location.href = PATH.USER.PROFILE;
           }, 3000);
         })
         .catch((err) => {
-          ToastWrapper(err.response.data?.error?.message, 'error');
+          ToastWrapper(err.response.data?.error?.message || MESSAGE.USER.LOGIN.FAIL, 'error');
           setLoading(false);
         });
     })();
