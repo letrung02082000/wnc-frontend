@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { MdAdd } from 'react-icons/md';
 
-function AddColumn({ addGradeColumn, item }) {
+function AddColumn({ addGradeColumn, item, headCol=3, tailCol=1 }) {
   const [gradeName, setGradeName] = useState('');
   const [gradeScale, setGradeScale] = useState(0);
 
   return (
     <Row className='d-flex align-items-center'>
-      <Col xs={1}></Col>
-      <Col xs={6}>
+      <Col xs={headCol}></Col>
+      <Col>
         <input
           type='text'
           className='w-100 p-2'
@@ -43,7 +43,7 @@ function AddColumn({ addGradeColumn, item }) {
           <MdAdd />
         </Button>
       </Col>
-      <Col xs={1}></Col>
+      <Col xs={tailCol}></Col>
     </Row>
   );
 }

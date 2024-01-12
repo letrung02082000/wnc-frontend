@@ -43,4 +43,26 @@ export const gradeApi = {
         const url = `/grade/remove/${id}`;
         return axiosClient.delete(url);
     },
+
+    getGradeReview: (classId) => {
+        const url = `/grade-review/${classId}`;
+        return axiosClient.get(url);
+    },
+
+    getDetailReview: (classId, reviewId) => {
+        const url = `/grade-review/${classId}/${reviewId}`;
+        return axiosClient.get(url);
+    },
+
+    commentReview: (reviewId, message) => {
+        const url = `/grade-review/comment`;
+        return axiosClient.post(url, {
+            reviewId, message
+        });
+    },
+
+    createReview: (body) => {
+        const url = `/grade-review/create`;
+        return axiosClient.post(url, body);
+    },
 }

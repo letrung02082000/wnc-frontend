@@ -16,11 +16,14 @@ import StructureModal from '../components/grade/StructureModal';
 import { classApi } from '@/api/class';
 import ImportGradeModal from '../components/grade/ImportGradeModal';
 import ImportStudentModal from '../components/grade/ImportStudentModal';
+import { SiTurbo } from 'react-icons/si';
+import ReviewModal from '../components/grade/ReviewModal';
 
 // Create new GridExample component
 const GradePage = () => {
   const { classId } = useParams();
   const [show, setShow] = useState(false);
+  const [reviewShow, setReviewShow] = useState(false);
   const [structureShow, setStructureShow] = useState(false);
   const [importGradeShow, setImportGradeShow] = useState(false);
   const [importStudentShow, setImportStudentShow] = useState(false);
@@ -32,6 +35,12 @@ const GradePage = () => {
   const [studentList, setStudentList] = useState({});
   const [gradeBoard, setGradeBoard] = useState([]);
   const [gradeList, setGradeList] = useState([]);
+  const [classRole, setClassRole] = useState('');
+  const CLASS_ROLE = {
+    TEACHER: 'teacher',
+    STUDENT: 'student',
+    OWNER: 'owner',
+  }
 
   const {
     control,
@@ -62,9 +71,12 @@ const GradePage = () => {
   }, []);
 
   useEffect(() => {
-    fetchGradeBoard();
-    fetchStudentList();
-  }, []);
+    if(classRole){
+      fetchGradeStructure();
+      fetchGradeBoard();
+      fetchStudentList();
+    }
+  }, [classRole]);
 
   useEffect(() => {
     const data = gradeBoard.map((item) => {
@@ -76,6 +88,14 @@ const GradePage = () => {
 
     setRowData(data);
   }, [Object.keys(studentList).length, gradeBoard]);
+
+  useEffect(() => {
+    classApi.checkRoleInClass(classId).then((res) => {
+      setClassRole(res?.data);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }, [])
 
   const fetchStudentList = useCallback(() => {
     classApi
@@ -98,28 +118,43 @@ const GradePage = () => {
       });
   }, []);
 
-  const fetchGradeBoard = useCallback(() => {
+  const fetchGradeBoard = () => {
     gradeApi
       .getGradeBoard(classId)
       .then((res) => {
-        const data = res?.data?.data?.map((item) => {
-          return {
-            fullname: item.fullname,
-            mssv: item.mssv,
-            ...item.grades,
-          };
-        });
+        let data = res.data.data;
 
-        setGradeBoard(data);
+        if(classRole === 'student') {
+          data = [
+            {
+              fullname: data?.fullname,
+              mssv: data?.mssv,
+              ...data?.grades,
+            }
+          ]
+          
+          setGradeBoard(data);
+        } else {
+          data = res?.data?.data?.map((item) => {
+            return {
+              fullname: item.fullname,
+              mssv: item.mssv,
+              ...item.grades,
+            };
+          });
+
+          setGradeBoard(data);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
   const onGridReady = useCallback((params) => {
     fetchGradeStructure();
   }, []);
+
 
   const fetchGradeStructure = useCallback(() => {
     gradeApi
@@ -130,7 +165,6 @@ const GradePage = () => {
         
         for (let index = 0; index < structure.length; index++) {
           const element = structure[index];
-          console.log(element)
           gradeList.push({
             value: element.gradeId,
             label: element.gradeName,
@@ -155,12 +189,12 @@ const GradePage = () => {
             return {
               field: item.gradeId.toString(),
               headerName: item.gradeName,
-              editable: true,
+              editable: classRole === CLASS_ROLE.TEACHER || classRole === CLASS_ROLE.OWNER,
               children: item.children.map((child) => {
                 return {
                   field: item[`${child}`].gradeId.toString(),
                   headerName: item[`${child}`].gradeName,
-                  editable: true,
+                  editable: classRole === CLASS_ROLE.TEACHER || classRole === CLASS_ROLE.OWNER,
                 };
               }),
             };
@@ -169,7 +203,7 @@ const GradePage = () => {
           return {
             field: item.gradeId.toString(),
             headerName: item.gradeName,
-            editable: true,
+            editable: classRole === CLASS_ROLE.TEACHER || classRole === CLASS_ROLE.OWNER,
           };
         });
 
@@ -238,16 +272,22 @@ const GradePage = () => {
     fetchGradeBoard();
     setImportGradeShow(false);
   }
+
   const handleImportStudentClose = () => {
     fetchGradeBoard();
     setImportStudentShow(false);
+  };
+  
+  const handleReviewClose = () => {
+    fetchGradeBoard();
+    setReviewShow(false);
   };
 
   return (
     <>
       <div
         className={'ag-theme-quartz'}
-        style={{ width: '100%', height: '90vh' }}
+        style={{ width: '100%', height: '80vh' }}
       >
         <AgGridReact
           rowData={rowData}
@@ -312,9 +352,11 @@ const GradePage = () => {
       </Modal>
 
       <Modal show={structureShow} onHide={handleStructureClose} size='lg'>
-        <Modal.Header closeButton></Modal.Header>
+        <Modal.Header closeButton>
+          <Modal.Title>Cấu trúc bảng điểm</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
-          <StructureModal classId={classId} />
+          <StructureModal classId={classId} classRole={classRole}/>
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleStructureClose}>
@@ -324,11 +366,11 @@ const GradePage = () => {
       </Modal>
 
       <Modal show={importGradeShow} onHide={handleImportGradeClose}>
-      <Modal.Header closeButton>
+        <Modal.Header closeButton>
           <Modal.Title>Nhập điểm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ImportGradeModal gradeList={gradeList}/>
+          <ImportGradeModal gradeList={gradeList} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant='secondary' onClick={handleImportGradeClose}>
@@ -351,25 +393,35 @@ const GradePage = () => {
         </Modal.Footer>
       </Modal>
 
-      <div className='d-flex w-100 my-3 justify-content-between'>
-        <div>
-          <Button className='ms-2' onClick={() => setShow(true)}>
-            Thêm sinh viên
+      {['teacher', 'owner'].includes(classRole) && (
+        <div className='d-flex w-100 my-3 justify-content-between'>
+          <div>
+            <Button className='ms-2' onClick={() => setShow(true)}>
+              Thêm sinh viên
+            </Button>
+            <Button className='ms-2' onClick={() => setStructureShow(true)}>
+              Cấu trúc bảng điểm
+            </Button>
+            <Button className='ms-2' onClick={() => setImportStudentShow(true)}>
+              Nhập danh sách sinh viên
+            </Button>
+            <Button className='ms-2' onClick={() => setImportGradeShow(true)}>
+              Nhập điểm
+            </Button>
+          </div>
+          <Button className='me-2' onClick={() => exportToCSV(rowData, 'data')}>
+            Xuất bảng điểm
           </Button>
+        </div>
+      )}
+
+      {classRole === CLASS_ROLE.STUDENT && (
+        <div>
           <Button className='ms-2' onClick={() => setStructureShow(true)}>
             Cấu trúc bảng điểm
           </Button>
-          <Button className='ms-2' onClick={() => setImportStudentShow(true)}>
-            Nhập danh sách sinh viên
-          </Button>
-          <Button className='ms-2' onClick={() => setImportGradeShow(true)}>
-            Nhập điểm
-          </Button>
         </div>
-        <Button className='me-2' onClick={() => exportToCSV(rowData, 'data')}>
-          Xuất bảng điểm
-        </Button>
-      </div>
+      )}
     </>
   );
 };

@@ -7,10 +7,12 @@ import { ToastWrapper } from '@/utils';
 import { userApi } from '@/api/user';
 import { MESSAGE } from '@/constants/message';
 import UpdateProfileModal from '../components/UpdateProfileModal';
+import UpdateStudentIdModal from '../components/UpdateStudentIdModal';
 
 function ProfilePage() {
   const [user, setUser] = useState();
   const [showUpdateProfileModal, setShowUpdateProfileModal] = useState(false);
+  const [showUpdateStudentIdModal, setShowUpdateStudentIdModal] = useState(false);
   const {
     control,
     setValue,
@@ -103,6 +105,21 @@ function ProfilePage() {
         });
   }
 
+  const handleUpdateStudentId = (data) => {
+    setShowUpdateStudentIdModal(false);
+    userApi
+      .updateStudentId(data)
+      .then(() => {
+        ToastWrapper(MESSAGE.USER.UPDATE.SUCCESS, 'success');
+      })
+      .catch((err) => {
+        ToastWrapper(err.response.data?.error?.message, 'error');
+      })
+      .finally(() => {
+        fetchUser();
+      });
+  };
+
   return (
     <Container>
       <Row className='justify-content-center'>
@@ -159,10 +176,21 @@ function ProfilePage() {
           <Row>
             <Col>
               <Button
-                className='mb-4 w-100'
+                className='my-4 w-100'
                 onClick={() => setShowUpdateProfileModal(true)}
               >
                 Cập nhật thông tin
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button
+                className='mb-4 w-100'
+                variant='outline-primary'
+                onClick={() => setShowUpdateStudentIdModal(true)}
+              >
+                Cập nhật mã số sinh viên
               </Button>
             </Col>
           </Row>
@@ -220,6 +248,7 @@ function ProfilePage() {
         </Col>
       </Row>
       <UpdateProfileModal show={showUpdateProfileModal} setShow={setShowUpdateProfileModal} onSubmit={handleUpdateProfile}/>
+      <UpdateStudentIdModal show={showUpdateStudentIdModal} setShow={setShowUpdateStudentIdModal} onSubmit={handleUpdateStudentId}/>
     </Container>
   );
 }

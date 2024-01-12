@@ -9,10 +9,15 @@ import { MESSAGE } from '@/constants/message';
 import ChildColumn from './ChildColumn';
 import ParentColumn from './ParentColumn';
 
-function StructureModal({ classId }) {
+function StructureModal({ classId, classRole }) {
   const [boardStructure, setBoardStructure] = useState([]);
   const [gradeScale, setGradeScale] = useState(0);
   const [gradeName, setGradeName] = useState('');
+  const CLASS_ROLE = {
+    TEACHER: 'teacher',
+    STUDENT: 'student',
+    OWNER: 'owner',
+  }
 
   const sortableOptions = {
     animation: 150,
@@ -77,7 +82,12 @@ function StructureModal({ classId }) {
     <ReactSortable list={boardStructure} setList={setBoardStructure}>
       {boardStructure.map((item, idx) => (
         <div key={item.gradeId} className='p-2 mx-2 my-4'>
-          <ParentColumn item={item} updateGradeColumn={updateGradeColumn} deleteGradeColumn={deleteGradeColumn}/>
+          <ParentColumn
+            classRole={classRole}
+            item={item}
+            updateGradeColumn={updateGradeColumn}
+            deleteGradeColumn={deleteGradeColumn}
+          />
           {item.children && (
             <ReactSortable
               list={item.children}
@@ -90,17 +100,30 @@ function StructureModal({ classId }) {
               }
             >
               {item.children.map((child) => (
-                <ChildColumn key={item[child]?.gradeId} child={child} item={item} updateGradeColumn={updateGradeColumn} deleteGradeColumn={deleteGradeColumn}/>
+                <ChildColumn
+                  classRole={classRole}
+                  key={item[child]?.gradeId}
+                  child={child}
+                  item={item}
+                  updateGradeColumn={updateGradeColumn}
+                  deleteGradeColumn={deleteGradeColumn}
+                />
               ))}
 
-              <AddColumn addGradeColumn={addGradeColumn} item={item} />
+              <div>
+              {[CLASS_ROLE.TEACHER, CLASS_ROLE.OWNER].includes(classRole) && (
+                <AddColumn addGradeColumn={addGradeColumn} item={item}/>
+              )}
+              </div>
             </ReactSortable>
           )}
         </div>
       ))}
 
       <div className='m-2 p-2'>
-        <AddColumn addGradeColumn={addGradeColumn} />
+        {[CLASS_ROLE.TEACHER, CLASS_ROLE.OWNER].includes(classRole) && (
+          <AddColumn addGradeColumn={addGradeColumn} headCol={2}/>
+        )}
       </div>
     </ReactSortable>
   );

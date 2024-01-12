@@ -28,7 +28,7 @@ function NavigationBar() {
                 <div>
                   <Nav.Link href='/'>Trang chủ</Nav.Link>
                 </div>
-                <div className='d-flex'>
+                <div className='d-flex align-items-center'>
                   {!isLogin ? (
                     <>
                       <Nav.Link>
@@ -47,14 +47,12 @@ function NavigationBar() {
                     </>
                   ) : (
                     <>
-                      <Nav.Link>
-                        <Link
-                          className='btn btn-outline-primary'
-                          to={PATH.CLASS.ME}
-                        >
-                          Quản lý lớp học
-                        </Link>
-                      </Nav.Link>
+                      <a
+                        className='btn btn-outline-primary'
+                        href={PATH.CLASS.ME}
+                      >
+                        Quản lý lớp học
+                      </a>
                       <Nav.Link>
                         <Button onClick={() => setCanvasShow(true)}>
                           Quản lý tài khoản
@@ -81,8 +79,15 @@ function NavigationBar() {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div className='d-flex flex-column'>
-            <Link className='btn btn-outline-primary my-2' to={PATH.USER.PROFILE}>Cập nhật thông tin</Link>
-            <Button onClick={handleLogoutButton} className='my-2'>Đăng xuất</Button>
+            <Link
+              className='btn btn-outline-primary my-2'
+              to={PATH.USER.PROFILE}
+            >
+              Cập nhật thông tin
+            </Link>
+            <Button onClick={handleLogoutButton} className='my-2'>
+              Đăng xuất
+            </Button>
           </div>
         </Offcanvas.Body>
       </Offcanvas>

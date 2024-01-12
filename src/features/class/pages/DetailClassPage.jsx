@@ -13,6 +13,9 @@ import {
 import { Form, useLocation, useParams } from 'react-router-dom';
 import Profile from '@/assets/images/profile.png';
 import { ToastWrapper } from '@/utils';
+import GradePage from './GradePage';
+import './style.css';
+import ReviewPage from './ReviewPage';
 
 function DetailClassPage() {
   const [email, setEmail] = useState('');
@@ -39,10 +42,9 @@ function DetailClassPage() {
         console.log(err);
       })
       .finally(() => {
-        console.log('done');
       });
   }, []);
-
+  
   const handleInviteButton = () => {
     console.log(email, role);
     setLoading(true);
@@ -83,7 +85,9 @@ function DetailClassPage() {
       <Tabs
         defaultActiveKey='home'
         id='uncontrolled-tab-example'
-        className='mb-3'
+        style={{
+          height: '8vh',
+        }}
       >
         <Tab eventKey='home' title='Thông tin lớp học'>
           <Container>
@@ -110,8 +114,17 @@ function DetailClassPage() {
             </Row>
           </Container>
         </Tab>
-        <Tab eventKey='assignments' title='Bài tập'>
-          <p className='fw-bold text-center'>Bạn chưa có bài tập nào được giao!</p>
+        <Tab
+          eventKey='assignments'
+          title='Bảng điểm'
+        >
+          <GradePage/>
+        </Tab>
+        <Tab
+          eventKey='reviews'
+          title='Xem lại'
+        >
+          <ReviewPage classId={item?.classId}/>
         </Tab>
         <Tab eventKey='participants' title='Thành viên'>
           <Container className='ms-5 mt-5'>

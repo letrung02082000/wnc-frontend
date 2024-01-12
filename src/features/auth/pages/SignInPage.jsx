@@ -71,7 +71,7 @@ function SignInPage() {
           localStorage.setItem('user', JSON.stringify(res?.data));
           setUser(res?.data);
           setTimeout(() => {
-            navigate(PATH.USER.PROFILE);
+            window.location.href = PATH.USER.PROFILE;
           }, 3000);
         })
         .catch((err) => {
