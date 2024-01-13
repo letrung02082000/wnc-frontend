@@ -61,6 +61,19 @@ function ClassLayout() {
       });
   };
 
+  const calNoti = () => {
+    let count = 0;
+
+    console.log("🚀 ~ calNoti ~ notifications:", notifications)
+    for (let i = 0; i < notifications.length; i++) {
+      if (notifications[i].isRead == false) {
+        count++;
+      }
+    }
+  
+    return count;
+  }
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div
@@ -96,7 +109,7 @@ function ClassLayout() {
         onClick={() => setShow(true)}
       >
         <MdNotificationImportant />{' '}
-        <Badge bg='danger'>{notifications.length}</Badge>
+        <Badge bg='danger'>{calNoti()}</Badge>
       </Button>
       <Offcanvas show={show} onHide={handleClose} placement='end'>
         <Offcanvas.Header closeButton>

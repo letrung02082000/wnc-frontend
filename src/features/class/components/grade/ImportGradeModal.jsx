@@ -9,7 +9,7 @@ import ReactSelect from 'react-select';
 function ImportGradeModal({gradeList}) {
   const [uploading, setUploading] = useState(false);
   const [gradeId, setGradeId] = useState('');
-  const endpoint = `${API_URL}/grade/import-assignment/`;
+  const endpoint = `${API_URL}grade/import-assignment/`;
 
   const downloadTemplate = () => {
     const fileName = 'grade-list';
