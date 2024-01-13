@@ -19,6 +19,7 @@ function SignInPage() {
   const fullname = searchParams.get('fullname');
   const access_token = searchParams.get('access_token');
   const userId = searchParams.get('userId');
+  const isAdmin = searchParams.get('isAdmin');
 
   if (email && fullname && access_token && userId) {
     localStorage.setItem(
@@ -28,6 +29,7 @@ function SignInPage() {
         fullname,
         access_token,
         userId,
+        isAdmin
       })
     );
     location.href = PATH.USER.PROFILE;
@@ -70,9 +72,15 @@ function SignInPage() {
           ToastWrapper(MESSAGE.USER.LOGIN.SUCCESS, 'success');
           localStorage.setItem('user', JSON.stringify(res?.data));
           setUser(res?.data);
-          setTimeout(() => {
-            window.location.href = PATH.USER.PROFILE;
-          }, 3000);
+          if (res?.data?.isAdmin) {
+            setTimeout(() => {
+              window.location.href = PATH.ADMIN.USER;
+            }, 3000);
+          } else {
+            setTimeout(() => {
+              window.location.href = PATH.USER.PROFILE;
+            }, 3000);
+          }
         })
         .catch((err) => {
           ToastWrapper(err.response.data?.error?.message || MESSAGE.USER.LOGIN.FAIL, 'error');

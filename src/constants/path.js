@@ -5,6 +5,8 @@ export const PATH = {
         ROOT: '/admin',
         SIGNIN: '/admin/login',
         SIGNUP: '/admin/register',
+        CLASS: '/admin/class',
+        USER: '/admin/user',
     },
     AUTH: {
         ROOT: '/auth',
