@@ -50,9 +50,10 @@ function ReviewPage({ classId }) {
               childIndex < element.children.length;
               childIndex++
             ) {
-              const childElement = element.children[childIndex];
-              if(element[childElement].isView) {
-                console.log(childElement)
+              const index = element.children[childIndex];
+              const childElement = element[index];
+
+              if(childElement.isView) {
                 gradeList.push({
                   value: childElement.gradeId,
                   label: childElement.gradeName,
