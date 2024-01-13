@@ -42,29 +42,6 @@ function JoinClassPage() {
           Tham gia lớp học thành công! <a href={PATH.CLASS.ME}>Xem danh sách lớp học của bạn</a>
         </p>
       ) : (<p className='fw-bold mt-5 text-center'>Đang tham gia lớp học...</p>)}
-      {/* <Row className='justify-content-center'>
-        <Col xs={6}>
-          <h1 className='text-center my-5'>Tham gia lớp học</h1>
-          <Row>
-            <Col xs={9}>
-              <FormControl
-                onChange={handleTextChange}
-                placeholder='Nhập mã được cung cấp để tham gia lớp học'
-              />
-            </Col>
-            <Col>
-              <Button
-                className='w-100'
-                variant='primary'
-                type='button'
-                onClick={handleJoinClick}
-              >
-                Vào lớp
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-      </Row> */}
     </Container>
   );
 }

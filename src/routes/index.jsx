@@ -26,6 +26,7 @@ import AccountManagementPage from '@/features/admin/pages/AccountManagementPage'
 import ClassManagementPage from '@/features/admin/pages/ClassManagementPage';
 import GradePage from '@/features/class/pages/GradePage';
 import DetailReviewPage from '@/features/class/pages/DetailReviewPage';
+import JoinClassByIdPage from '@/features/class/pages/JoinClassByIdPage';
 
 const router = createBrowserRouter([
   {
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
           {
             path: PATH.CLASS.JOIN,
             element: <JoinClassPage />,
+          },
+          {
+            path: PATH.CLASS.JOIN_BY_ID,
+            element: <JoinClassByIdPage />,
           },
           {
             path: PATH.CLASS.CREATE,
