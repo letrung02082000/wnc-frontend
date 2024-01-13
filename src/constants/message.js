@@ -38,6 +38,11 @@ export const MESSAGE = {
             SUCCESS: 'Delete successfully',
             FAIL: 'Delete failed',
         },
+
+        JOIN: {
+            SUCCESS: 'Tham gia lớp thành công',
+            FAIL: 'Mã lớp học không hợp lệ hoặc bạn đã tham gia lớp này',
+        },
     },
 
     GRADE: {
