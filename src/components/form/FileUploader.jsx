@@ -17,18 +17,18 @@ function FileUploader({
 }) {
   const FILE_MAX_SIZE = 50 * 1024 * 1024;
   const [uploadPercent, setUploadPercent] = useState(false);
-  const onDropAccepted = useCallback((files) => {
-    props?.setUploading(true);
-    let formData = new FormData();
-    formData.append(props?.name, files[0]);
-    axiosClient
-      .post(uploadUrl, formData, {
+  const onDropAccepted = useCallback(async (files) => {
+ 
+      props?.setUploading(true);
+      
+      const formData = new FormData();
+      formData.append(props?.name, files[0]);
+  
+      const response = await axiosClient.post(uploadUrl, formData, {
         onUploadProgress: (progressEvent) => {
-          const percent = parseInt(
-            (progressEvent.loaded / progressEvent.total) * 100
-          );
+          const percent = parseInt((progressEvent.loaded / progressEvent.total) * 100);
           setUploadPercent(percent / 2);
-
+  
           if (percent === 100) {
             setTimeout(() => {
               setUploadPercent(75);

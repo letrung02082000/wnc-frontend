@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 
 function ImportStudentModal({classId}) {
   const [uploading, setUploading] = useState(false);
-  const url = `${API_URL}/grade/import-csv/${classId}`;
+  const url = `${API_URL}grade/import-csv/${classId}`;
 
   const downloadTemplate = () => {
     const fileName = 'student-list';
