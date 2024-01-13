@@ -32,11 +32,11 @@ export const CLASS_MENU = [
         path: PATH.CLASS.JOINED,
         icon: <SiGoogleclassroom />,
       },
-      {
-        label: 'Tham gia',
-        path: PATH.CLASS.JOIN,
-        icon: <CiLogin />,
-      },
+      // {
+      //   label: 'Tham gia',
+      //   path: PATH.CLASS.JOIN,
+      //   icon: <CiLogin />,
+      // },
     ],
   },
 ];

@@ -3,6 +3,7 @@ import { Button, Card, Modal } from 'react-bootstrap';
 import ReviewModal from './ReviewModal';
 
 function Review({ item }) {
+  console.log(item);
   const [reviewShow, setReviewShow] = useState(false);
 
   const handleReviewClose = () => setReviewShow(false);
@@ -14,6 +15,11 @@ function Review({ item }) {
           <Card.Title>Xem lại #{item?.reviewId}</Card.Title>
           <Card.Text>Mã số sinh viên: {item?.mssv}</Card.Text>
           <Card.Text>Cột điểm : {item?.gradeName}</Card.Text>
+          {item?.isClose ? (
+            <Button className='me-2' variant='secondary'disabled>
+              Đã đóng
+            </Button>
+          ) : null}
           <Button variant='primary' onClick={setReviewShow}>
             Xem chi tiết
           </Button>

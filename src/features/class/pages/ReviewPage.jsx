@@ -32,7 +32,6 @@ function ReviewPage({ classId }) {
       .getGradeStructure(classId)
       .then((res) => {
         const structure = res.data;
-        console.log(structure)
         let gradeList = [];
 
         for (let index = 0; index < structure.length; index++) {
@@ -139,7 +138,7 @@ function ReviewPage({ classId }) {
           </Button>
         </Card.Body>
       </Card>
-      <h3 className='mt-5 mb-3'>Danh sách xem lại</h3>
+      <h3 className='mt-5 mb-3'>Danh sách yêu cầu</h3>
       <div className='d-flex flex-wrap'>
         {gradeReview.map((item) => {
           return <Review key={item?.reviewId} item={item} />;
