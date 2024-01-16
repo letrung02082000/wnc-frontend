@@ -30,7 +30,6 @@ export const userApi = {
         return axiosClient.post(url, body);
     },
     updateStudentId: (studentId) => {
-        console.log(studentId)
         const url = '/user/map-mssv';
         return axiosClient.post(url, {
             mssv: studentId,

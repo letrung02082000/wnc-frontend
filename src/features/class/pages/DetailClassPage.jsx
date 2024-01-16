@@ -40,6 +40,7 @@ function DetailClassPage() {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       })
       .finally(() => {
       });

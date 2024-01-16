@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Col, Container, Row, Button } from 'react-bootstrap';
 import ClassItemAdmin from '../components/ClassIteamAdmin';
 import { adminApi } from '@/api/admin';
+import { ToastWrapper } from '@/utils';
+import { MESSAGE } from '@/constants/message';
 
 const ClassManagementPage = () => {
   const [classes, setClasses] = useState([]);
@@ -18,6 +20,7 @@ const ClassManagementPage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       })
       .finally(() => {
         console.log('done');

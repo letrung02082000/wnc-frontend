@@ -1,6 +1,7 @@
 import { classApi } from '@/api/class';
 import { gradeApi } from '@/api/grade';
 import { CLASS_ROLE } from '@/constants/class';
+import { MESSAGE } from '@/constants/message';
 import { ToastWrapper } from '@/utils';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
@@ -24,6 +25,7 @@ function ReviewModal({ item }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   }, []);
 
@@ -36,6 +38,7 @@ function ReviewModal({ item }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -52,6 +55,7 @@ function ReviewModal({ item }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       })
       .finally(() => {
         setLoading(false);
@@ -68,6 +72,7 @@ function ReviewModal({ item }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -86,6 +91,7 @@ function ReviewModal({ item }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 

@@ -95,6 +95,7 @@ const GradePage = () => {
       setClassRole(res?.data);
     }).catch((err) => {
       console.log(err);
+      ToastWrapper(MESSAGE.ERROR, 'error')
     })
   }, [])
 
@@ -116,6 +117,7 @@ const GradePage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   }, []);
 
@@ -151,6 +153,7 @@ const GradePage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   }
 
@@ -220,6 +223,7 @@ const GradePage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   });
 
@@ -238,6 +242,7 @@ const GradePage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   }, []);
 
@@ -268,6 +273,7 @@ const GradePage = () => {
         .catch((err) => {
           setLoading(false);
           console.log(err);
+          ToastWrapper(MESSAGE.ERROR, 'error')
         });
     })();
   };
@@ -288,6 +294,7 @@ const GradePage = () => {
       fetchGradeStructure();
     }).catch((err) => {
       console.log(err);
+      ToastWrapper(MESSAGE.ERROR, 'error')
     })
   }
 

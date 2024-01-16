@@ -42,6 +42,7 @@ function StructureModal({ classId, classRole, setBoardStructure, boardStructure 
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -56,6 +57,7 @@ function StructureModal({ classId, classRole, setBoardStructure, boardStructure 
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -68,6 +70,7 @@ function StructureModal({ classId, classRole, setBoardStructure, boardStructure 
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -80,6 +83,7 @@ function StructureModal({ classId, classRole, setBoardStructure, boardStructure 
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 

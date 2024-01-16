@@ -6,19 +6,19 @@ export const MESSAGE = {
         },
         REGISTER: {
             SUCCESS: 'Đăng ký thành công',
-            FAIL: 'Register failed',
+            FAIL: 'Đăng ký thất bại',
         },
         LOGOUT: {
-            SUCCESS: 'Logout successfully',
-            FAIL: 'Logout failed',
+            SUCCESS: 'Đăng xuất thành công',
+            FAIL: 'Đăng xuất thất bại',
         },
         UPDATE: {
-            SUCCESS: 'Update successfully',
-            FAIL: 'Update failed',
+            SUCCESS: 'Cập nhật thành công',
+            FAIL: 'Cập nhật thất bại',
         },
         DELETE: {
-            SUCCESS: 'Delete successfully',
-            FAIL: 'Delete failed',
+            SUCCESS: 'Xóa thành công',
+            FAIL: 'Xóa thất bại',
         },
         GET_PROFILE: {
             SUCCESS: 'Get profile successfully',
@@ -27,16 +27,16 @@ export const MESSAGE = {
     },
     CLASS: {
         CREATE: {
-            SUCCESS: 'Create successfully',
-            FAIL: 'Create failed',
+            SUCCESS: 'Tạo lớp học thành công',
+            FAIL: 'Tạo lớp học thất bại',
         },
         UPDATE: {
-            SUCCESS: 'Update successfully',
-            FAIL: 'Update failed',
+            SUCCESS: 'Cập nhật lớp học thành công',
+            FAIL: 'Cập nhật lớp học thất bại',
         },
         DELETE: {
-            SUCCESS: 'Delete successfully',
-            FAIL: 'Delete failed',
+            SUCCESS: 'Xóa lớp học thành công',
+            FAIL: 'Xóa lớp học thất bại',
         },
 
         JOIN: {
@@ -47,21 +47,23 @@ export const MESSAGE = {
 
     GRADE: {
         CREATE: {
-            SUCCESS: 'Create successfully',
-            FAIL: 'Create failed',
+            SUCCESS: 'Tạo thành công',
+            FAIL: 'Tạo thất bại',
         },
         UPDATE: {
-            SUCCESS: 'Update successfully',
-            FAIL: 'Update failed',
+            SUCCESS: 'Cập nhật thành công',
+            FAIL: 'Cập nhật thất bại',
         },
         DELETE: {
-            SUCCESS: 'Delete successfully',
-            FAIL: 'Delete failed',
+            SUCCESS: 'Xóa thành công',
+            FAIL: 'Xóa thất bại',
         },
     },
 
     IMPORT: {
-        SUCCESS: 'Import successfully',
-        FAIL: 'Import failed',
+        SUCCESS: 'Nhập thành công',
+        FAIL: 'Nhập thất bại',
     },
+
+    ERROR: 'Đã có lỗi xảy ra. Vui lòng thử lại sau.'
 }

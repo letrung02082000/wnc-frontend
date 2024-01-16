@@ -1,5 +1,6 @@
 import { userApi } from '@/api/user';
 import InputField from '@/components/form/InputField';
+import { MESSAGE } from '@/constants/message';
 import { ToastWrapper } from '@/utils';
 import React, { useEffect } from 'react';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
@@ -40,6 +41,7 @@ function UpdateProfileModal({show, setShow, onSubmit}) {
       setValue('address', res.data.address);
     }).catch((err) => {
       console.log(err);
+      ToastWrapper(MESSAGE.ERROR, 'error')
     })
   }, [show])
   

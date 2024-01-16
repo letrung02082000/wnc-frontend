@@ -1,4 +1,5 @@
 import { classApi } from '@/api/class';
+import { MESSAGE } from '@/constants/message';
 import { PATH } from '@/constants/path';
 import { ToastWrapper } from '@/utils';
 import React, { useEffect } from 'react';
@@ -19,6 +20,7 @@ function JoinClassPage() {
       })
       .catch((err) => {
         console.log(err)
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   }, []);
 

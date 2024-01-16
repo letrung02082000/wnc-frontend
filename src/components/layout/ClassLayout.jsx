@@ -7,6 +7,7 @@ import { MdNotificationImportant } from 'react-icons/md';
 import { classApi } from '@/api/class';
 import { PATH } from '@/constants/path';
 import { ToastWrapper } from '@/utils';
+import { MESSAGE } from '@/constants/message';
 
 function ClassLayout() {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -30,6 +31,7 @@ function ClassLayout() {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -58,6 +60,7 @@ function ClassLayout() {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 

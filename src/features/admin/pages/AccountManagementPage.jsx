@@ -4,6 +4,8 @@ import { adminApi } from '@/api/admin';
 import AccountIteam from '../components/AccountIteam';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { ToastWrapper } from '@/utils';
+import { MESSAGE } from '@/constants/message';
 
 const AccountManagementPage = () => {
   const [users, setUsers] = useState([]);
@@ -20,6 +22,7 @@ const AccountManagementPage = () => {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       })
       .finally(() => {
         console.log('done');

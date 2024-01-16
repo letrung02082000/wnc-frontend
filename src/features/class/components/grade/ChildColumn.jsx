@@ -42,7 +42,7 @@ function ChildColumn({
           <MdOutlineDragIndicator />
         </Col>
         <Col xs={1}>
-          {/* <input
+          <input
             onChange={(e) => {
               setIsFinalize(e.target.checked);
               if (e.target.checked) {
@@ -52,7 +52,7 @@ function ChildColumn({
             disabled={item?.isView}
             checked={isFinalize}
             type='checkbox'
-          /> */}
+          />
         </Col>
         <Col>
           <input

@@ -3,6 +3,7 @@ import Review from '../components/grade/Review';
 import { gradeApi } from '@/api/grade';
 import { Button, Card, Form } from 'react-bootstrap';
 import { ToastWrapper } from '@/utils';
+import { MESSAGE } from '@/constants/message';
 
 function ReviewPage({ classId }) {
   const [gradeReview, setGradeReview] = useState([]);
@@ -24,6 +25,7 @@ function ReviewPage({ classId }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -67,6 +69,7 @@ function ReviewPage({ classId }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
@@ -99,6 +102,7 @@ function ReviewPage({ classId }) {
       })
       .catch((err) => {
         console.log(err);
+        ToastWrapper(MESSAGE.ERROR, 'error')
       });
   };
 
